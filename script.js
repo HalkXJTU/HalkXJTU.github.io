@@ -34,7 +34,7 @@ const ZH = {
   "a5":"西安交通大学第三十五届“腾飞杯” 一等奖",
   "a6":"国家级大学生创新训练计划项目 结题答辩排名第一",
   "n5":"在西安交通大学校园开放日展出村落数字孪生、灾害仿真与 XR 体验成果。",
-  "contact.l":"邮箱：","contact.s":"学校邮箱：","a7":"学创杯北京市数字营销模拟赛（本科组）一等奖","p3.t":"从资源到行动：传统村落适灾韧性的作用条件——以甘肃文县白马藏族传统村落为例","p3.a":"戎晓, 翟斌庆, <b>荆昊</b>, 万旭致, 侯婉莹, 刘可昕, 张永鑫","p3.v":"写作中 · 目标期刊：<i>International Journal of Disaster Risk Reduction</i>",
+  "contact.l":"邮箱：","contact.s":"米兰理工邮箱：","a7":"学创杯北京市数字营销模拟赛（本科组）一等奖","p3.t":"从资源到行动：传统村落适灾韧性的作用条件——以甘肃文县白马藏族传统村落为例","p3.a":"戎晓, 翟斌庆, <b>荆昊</b>, 万旭致, 侯婉莹, 刘可昕, 张永鑫","p3.v":"写作中 · 目标期刊：<i>International Journal of Disaster Risk Reduction</i>",
   "footer":"© 2026 荆昊 · 版式参考 jinruii.github.io"
 };
 const els=[...document.querySelectorAll("[data-i18n]")];
