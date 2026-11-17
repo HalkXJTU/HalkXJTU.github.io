@@ -4,15 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hao Jing | AI + Architecture</title>
-<link rel="stylesheet" href="styles.css">
+<meta name="description" content="Hao Jing, an architecture undergraduate at the XJTU-POLIMI Joint School, researches AI + architecture, digital heritage, UAV remote sensing, GIS and resilience.">
+<meta name="author" content="Hao Jing / 荆昊">
+<meta name="theme-color" content="#193e50">
+<link rel="canonical" href="https://halkxjtu.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://halkxjtu.github.io/">
+<meta property="og:site_name" content="Hao Jing / 荆昊">
+<meta property="og:title" content="Hao Jing | AI + Architecture">
+<meta property="og:description" content="Hao Jing, an architecture undergraduate at the XJTU-POLIMI Joint School, researches AI + architecture, digital heritage, UAV remote sensing, GIS and resilience.">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:image" content="https://halkxjtu.github.io/assets/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Hao Jing / 荆昊 — AI + Architecture — XJTU-POLIMI Joint School">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hao Jing | AI + Architecture">
+<meta name="twitter:description" content="Hao Jing, an architecture undergraduate at the XJTU-POLIMI Joint School, researches AI + architecture, digital heritage, UAV remote sensing, GIS and resilience.">
+<meta name="twitter:image" content="https://halkxjtu.github.io/assets/social-card.png">
+<meta name="twitter:image:alt" content="Hao Jing / 荆昊 — AI + Architecture — XJTU-POLIMI Joint School">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css?v=b8057fdaf2">
 </head>
 <body>
+<a class="skip-link" href="#main-content" data-i18n="skip">Skip to content</a>
 <header class="top-header">
-  <nav class="top-nav" aria-label="Primary">
-    <a class="brand" href="#about" data-i18n="name">Hao Jing</a>
-    <button class="menu-btn" aria-label="Menu" aria-expanded="false">☰</button>
-    <div class="nav-links">
-      <a href="#about" data-i18n="nav.about">About</a>
+  <nav class="top-nav" aria-label="Primary navigation" data-i18n-aria-label="nav.label">
+    <a class="brand" href="#about" aria-current="location" data-i18n="nav.home">Home</a>
+    <button class="menu-btn" type="button" aria-label="Open menu" data-i18n-aria-label="menu.open" aria-controls="nav-links" aria-expanded="false"><span aria-hidden="true">☰</span></button>
+    <div class="nav-links" id="nav-links">
       <a href="#research" data-i18n="nav.research">Research</a>
       <a href="#publications" data-i18n="nav.pubs">Publications</a>
       <a href="#projects" data-i18n="nav.projects">Projects</a>
@@ -21,78 +44,83 @@
       <a href="#news" data-i18n="nav.news">News</a>
       <a href="#contact" data-i18n="nav.contact">Contact</a>
     </div>
-    <button class="lang-toggle" type="button" aria-label="Switch language"><span data-l="zh">中</span> / <span data-l="en">EN</span></button>
+    <button class="lang-toggle" type="button" lang="en" aria-label="Switch to Chinese" data-i18n-aria-label="lang.switch"><span data-l="zh" lang="zh-CN">中</span><span class="lang-divider" aria-hidden="true">/</span><span data-l="en" lang="en">EN</span></button>
   </nav>
 </header>
 
 <div class="site-shell">
   <aside class="profile-sidebar">
-    <div class="portrait"><span>HJ</span></div>
+    <figure class="portrait profile-photo">
+      <picture><source type="image/webp" srcset="assets/profile-360.webp 360w, assets/profile-720.webp 720w" sizes="(max-width: 900px) 156px, 188px"><img src="assets/profile.jpg" width="1080" height="1620" alt="Portrait of Hao Jing" data-i18n-alt="photo.alt" decoding="async" fetchpriority="high"></picture>
+    </figure>
     <h1><span data-i18n="name">Hao Jing</span> <small data-i18n="altname">荆昊</small></h1>
-    <p class="role" data-i18n="role">Undergraduate Student in Architecture</p>
-    <p class="muted" data-i18n="supv">Undergraduate researcher supervised by Prof. Binqing Zhai</p>
-    <p class="muted" data-i18n="affil">XJTU-POLIMI Joint School, Xi'an Jiaotong University</p>
+    <p class="role" data-i18n="role">Architecture Undergraduate</p>
+    <p class="sidebar-affiliation"><span data-i18n="sidebar.school">XJTU-POLIMI Joint School</span><br><span data-i18n="sidebar.university">Xi'an Jiaotong University</span></p>
+    <!-- Location: display only after Hao Jing confirms the location to publish. -->
     <ul class="side-links">
-      <li><a href="mailto:Halk_Jing@hotmail.com">Halk_Jing@hotmail.com</a></li>
-      <li><a class="muted" href="mailto:hao1.jing@mail.polimi.it">hao1.jing@mail.polimi.it</a></li>
-      <!-- 待补充：上传 cv.pdf 后取消注释
-      <li><a href="cv.pdf" data-i18n="cv">CV</a></li> -->
-      <!-- 待补充：填入她本人的 Google Scholar 链接后取消注释
-      <li><a href="#" data-i18n="scholar">Google Scholar</a></li> -->
-      <li><a href="https://orcid.org/0009-0009-9396-4258" target="_blank" rel="noopener" data-i18n="orcid">ORCID</a></li>
+      <li><a href="mailto:Halk_Jing@hotmail.com" aria-label="Primary email: Halk_Jing@hotmail.com" data-i18n-aria-label="email.primaryLabel" data-i18n="email.primary">Email</a></li>
+      <li><a href="mailto:hao1.jing@mail.polimi.it" aria-label="PoliMi email: hao1.jing@mail.polimi.it" data-i18n-aria-label="email.polimiLabel" data-i18n="email.polimi">PoliMi Email</a></li>
+      <li><a class="orcid-link" href="https://orcid.org/0009-0009-9396-4258" target="_blank" rel="noopener noreferrer" aria-label="Hao Jing on ORCID (opens in a new tab)" data-i18n-aria-label="orcid.label">ORCID <span aria-hidden="true">↗</span></a></li>
+      <!-- CV: add the verified local PDF path before making a CV link visible. -->
+      <!-- Google Scholar: add Hao Jing's own verified profile URL before displaying a link. -->
     </ul>
   </aside>
 
-  <main class="content">
+  <main class="content" id="main-content" tabindex="-1">
     <section id="about">
-      <h2 data-i18n="nav.about">About</h2>
-      <p data-i18n="about.p1">I am a five-year Bachelor of Architecture student (2023 cohort, expected 2028) at the XJTU-POLIMI Joint School, a joint programme of Xi'an Jiaotong University and Politecnico di Milano.</p>
-      <p data-i18n="about.p2">My research brings AI and geospatial methods into architecture: UAV remote sensing, GIS, computer-vision segmentation and interpretable machine learning (XGBoost–SHAP), applied to digital heritage, digital twins, urban analytics and climate resilience of traditional settlements.</p>
-      <p class="note" data-i18n="about.p3">I am looking for research-oriented master's / PhD opportunities in AI + Built Environment and Geospatial AI.</p>
+      <h2 data-i18n="nav.about">About Me</h2>
+      <p data-i18n="about.p1">I am an <strong>architecture undergraduate</strong> at the <strong>XJTU-POLIMI Joint School</strong>, a joint programme of Xi'an Jiaotong University and Politecnico di Milano. I conduct research under the supervision of <strong>Prof. Binqing Zhai</strong>.</p>
+      <p data-i18n="about.p2">My research connects <strong>AI and geospatial methods</strong> with architecture and traditional settlements. I focus on <strong>digital heritage, digital twins and climate/disaster resilience</strong>, using UAV remote sensing, GIS, computer vision and interpretable machine learning.</p>
+      <p class="education-note" data-i18n="about.education">Five-year Bachelor of Architecture programme · 2023 cohort · Expected graduation: 2028</p>
+      <p class="note" data-i18n="about.p3">I am looking for <strong>research-oriented master's / PhD opportunities</strong> in AI + Built Environment and Geospatial AI.</p>
     </section>
 
     <section id="research">
       <h2 data-i18n="nav.research">Research Interests</h2>
-      <ul class="tags">
-        <li data-i18n="r1">AI + Architecture</li><li data-i18n="r2">UAV Remote Sensing</li><li data-i18n="r3">GIS &amp; 3D Viewshed</li>
-        <li data-i18n="r4">Computer Vision Segmentation</li><li data-i18n="r5">Interpretable ML (XGBoost–SHAP)</li><li data-i18n="r6">Digital Twin</li>
-        <li data-i18n="r7">Digital Heritage</li><li data-i18n="r8">Urban Analytics</li><li data-i18n="r9">Climate Resilience</li><li data-i18n="r10">Urban Tourism</li>
-      </ul>
+      <div class="research-groups">
+        <article><h3 data-i18n="research.builtTitle">Architecture &amp; heritage</h3><ul class="topic-list"><li data-i18n="r1">AI + Architecture</li><li data-i18n="r7">Digital Heritage</li><li data-i18n="r6">Digital Twins</li></ul></article>
+        <article><h3 data-i18n="research.citiesTitle">Cities &amp; resilience</h3><ul class="topic-list"><li data-i18n="r8">Urban Analytics</li><li data-i18n="research.resilience">Climate &amp; Disaster Resilience</li><li data-i18n="r10">Urban Tourism</li></ul></article>
+      </div>
+      <div class="research-methods"><h3 data-i18n="research.methodsTitle">Methods</h3><ul class="method-list"><li data-i18n="r2">UAV Remote Sensing</li><li data-i18n="r3">GIS &amp; 3D Viewshed</li><li data-i18n="r4">Computer Vision Segmentation</li><li data-i18n="r5">Interpretable ML (XGBoost–SHAP)</li></ul></div>
     </section>
 
     <section id="publications">
       <h2 data-i18n="nav.pubs">Publications</h2>
       <p class="muted small" data-i18n="pubs.note">* Equal contribution (co-first author)</p>
-      <ol class="pubs">
+      <ol class="pubs" role="list">
         <li>
-          <div class="pub-title">A Multi-Source UAV Framework for Courtyard-Scale Visual–Material Integrity Assessment in Mountain Traditional Villages</div>
-          <div class="pub-authors">Xiao Rong*, <b>Hao Jing*</b>, Binqing Zhai, Andi Dwi Atmoko, Chuhan Huang, Yishan Xu, Barbara Galli</div>
-          <div class="pub-venue"><i>Remote Sensing</i>, 18(18), 3067, 2026 · <a href="https://doi.org/10.3390/rs18183067">DOI</a></div>
+          <h3 class="pub-title" lang="en"><a href="https://doi.org/10.3390/rs18183067">A Multi-Source UAV Framework for Courtyard-Scale Visual–Material Integrity Assessment in Mountain Traditional Villages</a></h3>
+          <div class="pub-authors" lang="en">Xiao Rong*, <a class="author-profile" href="https://orcid.org/0009-0009-9396-4258"><strong>Hao Jing*</strong></a>, Binqing Zhai, Andi Dwi Atmoko, Chuhan Huang, Yishan Xu, Barbara Galli</div>
+          <div class="pub-venue" lang="en"><i>Remote Sensing</i>, 18(18), 3067, 2026</div>
           <p class="pub-desc" data-i18n="p1.desc">UAV orthophoto, 3D mesh and point cloud fusion with YOLO instance segmentation, 3D GIS viewshed analysis and XGBoost–SHAP for 749 courtyards in 9 traditional villages (Shangluo), externally validated in Longnan.</p>
+          <div class="pub-actions"><a class="resource-link" href="https://doi.org/10.3390/rs18183067" aria-label="DOI: A Multi-Source UAV Framework" data-i18n-aria-label="p1.doi">DOI <span aria-hidden="true">↗</span></a><a class="resource-link" href="https://www.mdpi.com/2072-4292/18/18/3067/pdf" aria-label="PDF: A Multi-Source UAV Framework" data-i18n-aria-label="p1.pdf">PDF <span aria-hidden="true">↓</span></a></div>
         </li>
         <li>
-          <div class="pub-title">A full-chain assessment and prediction of social-ecological system vulnerability and its driving factors in multi-ethnic regions: Evidence from southwestern Gansu, China</div>
-          <div class="pub-authors">Xiao Rong, Binqing Zhai, Rongyi Sun, Runyang Li, <b>Hao Jing</b>, Maurizio Meriggi, Gerardo Semprebon</div>
-          <div class="pub-venue"><i>Ecological Indicators</i>, 178, 114105, 2025 · <a href="https://doi.org/10.1016/j.ecolind.2025.114105">DOI</a></div>
+          <h3 class="pub-title" lang="en"><a href="https://doi.org/10.1016/j.ecolind.2025.114105">A full-chain assessment and prediction of social-ecological system vulnerability and its driving factors in multi-ethnic regions: Evidence from southwestern Gansu, China</a></h3>
+          <div class="pub-authors" lang="en">Xiao Rong, Binqing Zhai, Rongyi Sun, Runyang Li, <a class="author-profile" href="https://orcid.org/0009-0009-9396-4258"><strong>Hao Jing</strong></a>, Maurizio Meriggi, Gerardo Semprebon</div>
+          <div class="pub-venue" lang="en"><i>Ecological Indicators</i>, 178, 114105, 2025</div>
+          <div class="pub-actions"><a class="resource-link" href="https://doi.org/10.1016/j.ecolind.2025.114105" aria-label="DOI: A full-chain assessment and prediction" data-i18n-aria-label="p2.doi">DOI <span aria-hidden="true">↗</span></a></div>
+          <!-- PDF: add only after a public PDF URL or author manuscript has been verified. -->
         </li>
-        <li>
-          <div class="pub-title" data-i18n="p3.t">From Resources to Action: Conditions Shaping Disaster-Adaptive Resilience in Traditional Villages—A Case Study of Baima Tibetan Villages in Wen County, Gansu <span class="muted">(working English title)</span></div>
-          <div class="pub-authors" data-i18n="p3.a">Xiao Rong, Binqing Zhai, <b>Hao Jing</b>, 万旭致, 侯婉莹, 刘可昕, 张永鑫</div>
+        <li class="pub-working">
+          <h3 class="pub-title" data-i18n="p3.t">From Resources to Action: Conditions Shaping Disaster-Adaptive Resilience in Traditional Villages—A Case Study of Baima Tibetan Villages in Wen County, Gansu <span class="working-title">(working English title)</span></h3>
+          <div class="pub-authors" data-i18n="p3.a">Xiao Rong, Binqing Zhai, <a class="author-profile" href="https://orcid.org/0009-0009-9396-4258"><strong>Hao Jing</strong></a>, Xuzhi Wan, Wanying Hou, Kexin Liu, Yongxin Zhang</div>
           <div class="pub-venue" data-i18n="p3.v">Manuscript in preparation · target journal: <i>International Journal of Disaster Risk Reduction</i></div>
         </li>
       </ol>
+      <!-- Manuscript 3: confirm the final English title, official author spellings, submission status and any public links before updating. -->
     </section>
 
     <section id="projects">
       <h2 data-i18n="nav.projects">Projects</h2>
       <div class="card">
         <h3 data-i18n="pj1.t">Digital Conservation of Sino-Italian Traditional Villages: Local Wisdom Study and Standardised Platform</h3>
-        <p class="muted small" data-i18n="pj1.m">National Undergraduate Innovation Training Programme (2025) · Project Leader · Supervisor: Prof. Binqing Zhai · 2025.06–2026.06</p>
+        <p class="muted small" data-i18n="pj1.m">National Undergraduate Innovation Training Programme (2025)<br>Project Leader · 2025.06–2026.06<br>Supervisor: Prof. Binqing Zhai</p>
         <p data-i18n="pj1.d">Multi-source data capture, GIS, computer vision and machine learning to study disaster risk, building character and conservation of traditional villages, with a local-wisdom database and a digital-twin display platform.</p>
       </div>
       <div class="card">
         <h3 data-i18n="pj2.t">UAV 3D Reconstruction and Multi-source Meteorological Coupling for Village Disaster Monitoring and Digital-Twin Simulation</h3>
-        <p class="muted small" data-i18n="pj2.m">Undergraduate Innovation Training Project (applied 2026.03; planned 2026.05–2027.05) · Project Leader · Supervisor: Prof. Binqing Zhai</p>
+        <p class="muted small" data-i18n="pj2.m">Undergraduate Innovation Training Project<br>Applied: 2026.03 · Planned: 2026.05–2027.05<br>Project Leader · Supervisor: Prof. Binqing Zhai</p>
         <p data-i18n="pj2.d">UAV photogrammetry / LiDAR, 3D Gaussian Splatting, AI recognition and Unreal Engine 5 disaster scenario simulation with MR/XR presentation.</p>
       </div>
     </section>
@@ -100,13 +128,14 @@
     <section id="portfolio">
       <h2 data-i18n="nav.portfolio">Portfolio</h2>
       <div class="pf-grid">
-      <article class="pf-card"><img src="assets/twin-platform.jpg" alt="" loading="lazy"><div class="pf-body"><h3 data-i18n="pf1.t">Rural Settlement Digital Twin Monitoring & Smart Governance Platform</h3><p data-i18n="pf1.d">Web platform built on UAV 3D reconstruction (point cloud / mesh / 3D Tiles) for village disaster monitoring and digital-twin display.</p><a class="pf-link" href="http://8.146.229.40/disaster-twin" target="_blank" rel="noopener" data-i18n="pf.visit">Visit website ↗</a></div></article>
-      <article class="pf-card"><img src="assets/villages-56.jpg" alt="" loading="lazy"><div class="pf-body"><h3 data-i18n="pf2.t">Walking into 56 Villages — Village Website</h3><p data-i18n="pf2.d">Rural digital website presenting traditional villages.</p></div></article>
-      <article class="pf-card"><img src="assets/resilience-workbench.jpg" alt="" loading="lazy"><div class="pf-body"><h3 data-i18n="pf3.t">Social-Ecological Resilience · Digital Observation Workbench</h3><p data-i18n="pf3.d">Rural digital web dashboard for social-ecological resilience observation.</p></div></article>
-      <article class="pf-card"><img src="assets/uav-reconstruction.jpg" alt="" loading="lazy"><div class="pf-body"><h3 data-i18n="pf4.t">UAV Survey & 3D Reconstruction</h3><p data-i18n="pf4.d">UAV aerial survey and image-based modelling of villages, producing point clouds, meshes and 3D Tiles as a digital-twin base.</p></div></article>
-      <article class="pf-card"><img src="assets/yolo-house-types.jpg" alt="" loading="lazy"><div class="pf-body"><h3 data-i18n="pf5.t">YOLO Recognition of House Types</h3><p data-i18n="pf5.d">YOLO image recognition to detect house types.</p></div></article>
-      <article class="pf-card"><img src="assets/open-day.jpg" alt="" loading="lazy"><div class="pf-body"><h3 data-i18n="pf6.t">UE5 Disaster Simulation & XR Exhibition</h3><p data-i18n="pf6.d">Flood / landslide scenarios in Unreal Engine 5 and mixed-reality experiences, exhibited to the public at the XJTU Campus Open Day.</p></div></article>
+      <article class="pf-card"><div class="pf-media"><picture><source type="image/webp" srcset="assets/twin-platform-640.webp 640w, assets/twin-platform-1080.webp 1080w" sizes="(max-width: 600px) calc(100vw - 32px), (max-width: 900px) calc((100vw - 82px) / 2), 389px"><img src="assets/twin-platform.jpg" width="1600" height="900" alt="Rural settlement digital twin platform homepage" data-i18n-alt="pf1.alt" loading="lazy" decoding="async"></picture></div><div class="pf-body"><h3 data-i18n="pf1.t">Disaster Digital Twin Platform</h3><p data-i18n="pf1.d">Web platform built on UAV 3D reconstruction (point cloud / mesh / 3D Tiles) for village disaster monitoring and digital-twin display.</p><a class="pf-link" href="http://8.146.229.40/disaster-twin" target="_blank" rel="noopener noreferrer" data-i18n="pf.visit">Visit website ↗ <span class="sr-only">(opens in a new tab)</span></a></div></article>
+      <article class="pf-card"><div class="pf-media"><picture><source type="image/webp" srcset="assets/villages-56-640.webp 640w, assets/villages-56-1080.webp 1080w" sizes="(max-width: 600px) calc(100vw - 32px), (max-width: 900px) calc((100vw - 82px) / 2), 389px"><img src="assets/villages-56.jpg" width="1600" height="1382" alt="Traditional village website overview" data-i18n-alt="pf2.alt" loading="lazy" decoding="async"></picture></div><div class="pf-body"><h3 data-i18n="pf2.t">Walking into 56 Villages</h3><p data-i18n="pf2.d">Rural digital website presenting traditional villages.</p></div></article>
+      <article class="pf-card"><div class="pf-media"><picture><source type="image/webp" srcset="assets/resilience-workbench-640.webp 640w, assets/resilience-workbench-1080.webp 1080w" sizes="(max-width: 600px) calc(100vw - 32px), (max-width: 900px) calc((100vw - 82px) / 2), 389px"><img src="assets/resilience-workbench.jpg" width="1600" height="1382" alt="Social-ecological resilience observation dashboard" data-i18n-alt="pf3.alt" loading="lazy" decoding="async"></picture></div><div class="pf-body"><h3 data-i18n="pf3.t">Social-Ecological Resilience Workbench</h3><p data-i18n="pf3.d">Rural digital web dashboard for social-ecological resilience observation.</p></div></article>
+      <article class="pf-card"><div class="pf-media"><picture><source type="image/webp" srcset="assets/uav-reconstruction-640.webp 640w, assets/uav-reconstruction-1080.webp 1080w" sizes="(max-width: 600px) calc(100vw - 32px), (max-width: 900px) calc((100vw - 82px) / 2), 389px"><img src="assets/uav-reconstruction.jpg" width="1600" height="1051" alt="UAV village reconstruction: point clouds, mesh and mapped buildings" data-i18n-alt="pf4.alt" loading="lazy" decoding="async"></picture></div><div class="pf-body"><h3 data-i18n="pf4.t">UAV 3D Reconstruction</h3><p data-i18n="pf4.d">UAV aerial survey and image-based modelling of villages, producing point clouds, meshes and 3D Tiles as a digital-twin base.</p></div></article>
+      <article class="pf-card"><div class="pf-media"><picture><source type="image/webp" srcset="assets/yolo-house-types-640.webp 640w, assets/yolo-house-types-1080.webp 1080w" sizes="(max-width: 600px) calc(100vw - 32px), (max-width: 900px) calc((100vw - 82px) / 2), 389px"><img src="assets/yolo-house-types.jpg" width="1600" height="1360" alt="YOLO house-type recognition results and comparison charts" data-i18n-alt="pf5.alt" loading="lazy" decoding="async"></picture></div><div class="pf-body"><h3 data-i18n="pf5.t">YOLO House-Type Recognition</h3><p data-i18n="pf5.d">YOLO image recognition to detect house types.</p></div></article>
+      <article class="pf-card"><div class="pf-media"><picture><source type="image/webp" srcset="assets/open-day-640.webp 640w, assets/open-day-1080.webp 1080w" sizes="(max-width: 600px) calc(100vw - 32px), (max-width: 900px) calc((100vw - 82px) / 2), 389px"><img src="assets/open-day.jpg" width="1600" height="1200" alt="Village digital twin and XR exhibition at the XJTU Campus Open Day" data-i18n-alt="pf6.alt" loading="lazy" decoding="async"></picture></div><div class="pf-body"><h3 data-i18n="pf6.t">UE5 / XR Open Day Exhibition</h3><p data-i18n="pf6.d">Flood / landslide scenarios in Unreal Engine 5 and mixed-reality experiences, exhibited to the public at the XJTU Campus Open Day.</p></div></article>
       </div>
+      <!-- Portfolio items 2–6: add verified destination URLs before displaying links. -->
     </section>
 
     <section id="awards">
@@ -138,9 +167,9 @@
       <h2 data-i18n="nav.contact">Contact</h2>
       <p><span data-i18n="contact.l">Email:</span> <a href="mailto:Halk_Jing@hotmail.com">Halk_Jing@hotmail.com</a> · <span data-i18n="contact.s">PoliMi:</span> <a href="mailto:hao1.jing@mail.polimi.it">hao1.jing@mail.polimi.it</a></p>
     </section>
-    <footer class="muted small" data-i18n="footer">© 2026 Hao Jing · Layout inspired by jinruii.github.io</footer>
+    <footer class="muted small" data-i18n="footer">© 2026 Hao Jing · Layout inspired by <a href="https://jinruii.github.io/" lang="en">Jin Rui</a></footer>
   </main>
 </div>
-<script src="script.js"></script>
+<script src="script.js?v=dc5a7cc11c" defer></script>
 </body>
 </html>

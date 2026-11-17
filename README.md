@@ -1,33 +1,52 @@
 # 荆昊（Hao Jing）个人学术主页
 
-纯静态网站：`index.html` + `styles.css` + `script.js`，无需构建，可直接部署到 GitHub Pages。
-版式参考（layout inspired by）[Jin Rui 的主页](https://jinruii.github.io/)，代码与内容均为独立编写。
+纯静态 HTML、CSS、JavaScript，无框架、无构建步骤或第三方运行时依赖。版式参考 [Jin Rui 的主页](https://jinruii.github.io/)，内容与代码独立维护。按 2026-11-17 核对的参考站样式调整：Arial 正文、常规字重标题、蓝色链接、紫红色强调、250px 侧栏、72px 栏间距与 820px 正文宽度。
 
-## 部署到 GitHub Pages
-1. 登录 GitHub，点右上角 **+ → New repository**。
-2. 仓库名必须为 `你的用户名.github.io`（例如 `haojing.github.io`），选 **Public**，点 Create。
-3. 在仓库页点 **Add file → Upload files**，把 `index.html`、`styles.css`、`script.js`（以及以后的头像、CV 文件）拖进去，点 **Commit changes**。
-4. 进入 **Settings → Pages**，Source 选 **Deploy from a branch**，Branch 选 `main` / `(root)`，保存。
-5. 等 1–2 分钟，访问 `https://你的用户名.github.io`。以后修改文件并提交，网站会自动更新。
+## 本地预览与部署
 
-## 修改文字（中英文）
-- **英文**：直接写在 `index.html` 里带 `data-i18n="键名"` 的元素中。
-- **中文**：写在 `script.js` 顶部的 `ZH` 对象里，键名与 `data-i18n` 一致。
-- 新增一段文字：在 HTML 写英文并加 `data-i18n="新键名"`，再在 `ZH` 里加 `"新键名": "中文"`。没写中文的键会显示英文。
-- 论文标题、作者等不需要翻译的内容不加 `data-i18n` 即可。
-- 语言切换按钮在导航栏右侧；默认跟随浏览器语言，选择会保存在浏览器 localStorage。
+在仓库根目录运行 `python -m http.server 4173 --bind 127.0.0.1`，然后访问 `http://127.0.0.1:4173/`。
 
-## 头像 / CV
-- 头像：把照片放到仓库（如 `avatar.jpg`），将 `index.html` 中 `<div class="portrait"><span>HJ</span></div>` 换成 `<img class="portrait" src="avatar.jpg" alt="Hao Jing">`。
-- CV：上传 `cv.pdf`，把侧栏 CV 链接的 `href="#"` 改为 `href="cv.pdf"`。
-- 邮箱：把 `EMAIL_PLACEHOLDER` 和所有【邮箱】替换为真实邮箱。
+本仓库为 `HalkXJTU/HalkXJTU.github.io`。GitHub Pages 使用 `main` 分支根目录，推送后由 GitHub Pages 自动发布至 https://halkxjtu.github.io/ 。无需安装依赖或运行构建命令。
 
-## 待补充清单（公开页面已隐藏，补齐后再显示）
-- **CV**：上传 `cv.pdf` 后，取消 `index.html` 侧栏中 CV 那一行的注释。
-- **Google Scholar / ORCID**：填入本人链接后取消注释。注意 0009-0008-3606-7035 是导师的 ORCID，不能用。
-- **两个乡村数字网站的链接**（「走进56个村落」「社会生态韧性·数字观测工作台」）：拿到网址后，参照第一张卡片加上 `<a class="pf-link" ...>`。
-- **2026 年无人机灾害监测项目的立项级别**：拿到立项文件前不要写级别。
-- **第三篇论文的正式英文题名和投稿状态**：现在用的是工作译名，状态写的是“写作中”。
-- **奖项具体月份**：国赛金奖 / 铜奖、大创结题、校园开放日目前只写到年份。
-- **头像**：照片放进仓库后，按上文替换 HJ 占位块。
-- **不要放到主页上的**：专利（目前只有技术交底书）、软著，以及 `source/` 文件夹（里面的原始材料含个人隐私，不要上传到 GitHub）。
+## 双语维护
+
+- 英文正文写在 `index.html` 的 `data-i18n="键名"` 元素内，中文写在 `script.js` 的 `ZH` 词典中。
+- 图片说明使用 `data-i18n-alt`，控件标签使用 `data-i18n-aria-label`；英文属性值直接写入 HTML，中文使用对应词典键。
+- 新增或修改内容时同步维护两种语言。正式发表的英文论文题名、作者署名、期刊名保留原文。
+- 语言选择保存到 localStorage；首次访问跟随浏览器语言。禁用存储时仍可切换。页面标题、摘要和分享元数据随切换更新。
+- 分享爬虫通常不执行 JavaScript，因此初始 HTML 中保留英文元数据；分享图片同时包含中英文姓名。
+- 侧栏按“姓名、身份、学院、学校、联系入口”组织；学院和学校分别由 `sidebar.school`、`sidebar.university` 控制，并明确分行。导师放在简介中，不挤入机构信息。
+- 简介分别介绍身份与导师、研究主题，学制和毕业时间单列。研究区将研究主题与方法分别列出，避免把所有关键词混成一段。
+- 项目元数据中的 `<br>` 表示有意分行，修改两种语言时保持项目级别、时间与职责的层次。
+- 样式和脚本 URL 带内容版本参数；发布 CSS / JavaScript 更新时同步更新对应参数，避免浏览器继续显示旧版本。
+
+## 图片和分享信息
+
+- 原始 JPG 保留为后备与维护源文件；`picture` 使用 640 / 1080 像素 WebP 配合 `srcset` 与 `sizes` 按屏幕选择图片。
+- 作品集图片使用懒加载、异步解码与固定宽高，侧栏个人照片优先加载。
+- 侧栏照片使用 `assets/profile.jpg`，并提供 360 / 720 像素 WebP 版本，照片框为桌面 188 × 242px、手机 156 × 202px。
+- 新增或替换图片时同步更新 WebP、宽高、中英文 alt。
+- `assets/favicon.svg` 是主图标，另有 PNG 和 Apple touch icon。
+- `assets/social-card.png` 为 1200 × 630 分享图片。更换域名时同步修改 canonical、Open Graph、Twitter 元数据中的绝对 URL。
+
+## 论文和作品链接
+
+- 论文作者列表使用 `strong` 强调本人；星号表示共同第一作者。
+- 第一篇论文的 PDF 按钮指向出版社页面公开提供的入口；第二篇仅显示 DOI，确认公开 PDF 或作者稿后再补充。
+- 未确认的作品链接不显示按钮。外部作品网站在新标签页打开，并有相应的屏幕阅读器提示。
+- 不推断投稿结果、立项级别、奖项月份或新的个人资料。
+
+## 仍待补充（页面中隐藏）
+
+- 本人 CV 文件和 Google Scholar 的已核验链接。ORCID 已使用本人提供的 `0009-0009-9396-4258`。
+- 其余作品卡片的真实网址。
+- 第三篇论文的正式英文题名、作者官方英文署名及明确投稿状态；当前英文题名为工作译名，其他作者英文姓名为拼音译写。
+- 2026 年项目的正式立项级别，以及现有内容中未明确的奖项月份。
+
+仅在确认信息后取消或替换 HTML 注释。不要使用导师的 ORCID，不要上传身份证号、电话、原始隐私材料、专利技术交底书或尚未确认的软件著作权信息。
+
+## 提交前检查
+
+预览桌面和手机端的中英文；检查语言记忆、图片加载、长标题换行和横向溢出。用键盘验证跳转正文、导航、语言切换、资源链接及菜单 Escape 关闭。菜单收起后 `aria-expanded` 应为 `false`；减少动态效果偏好下不播放平滑滚动或卡片动画。
+
+`.preview/` 为本地预览资料目录，`design-qa.md` 为本地视觉核验记录；均由 `.gitignore` 排除，不随站点发布。
