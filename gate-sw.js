@@ -2,7 +2,7 @@
 const scopeURL = new URL(self.registration.scope);
 const sessions = new Map();
 const handoffs = new Map();
-const visitorScripts = new Set(["gate-ui.js", "gate-ui.css", "vault.js", "gate-sw.js", "gate-config.json", "invitation-grants.json", "robots.txt", ".nojekyll"]);
+const visitorScripts = new Set(["gate-ui.js", "gate-ui.css", "vault.js", "gate-sw.js", "gate-config.json", "invitation-grants.json", "named-invites.mjs", "robots.txt", ".nojekyll"]);
 const tabLifetime = 2 * 60 * 60 * 1000;
 
 self.addEventListener("install", event => event.waitUntil(self.skipWaiting()));

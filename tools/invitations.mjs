@@ -14,7 +14,7 @@ if (!Number.isInteger(operatorPort) || operatorPort < 1024 || operatorPort > 655
 }
 const operatorOrigin = 'http://127.0.0.1:' + operatorPort;
 const previewOrigin = 'http://127.0.0.1:4173';
-const consoleHelp = 'node tools/invitations.mjs [serve | list | create "收件人备注" | revoke ID | init | export | register]';
+const consoleHelp = 'node tools/invitations.mjs [serve | list | create "收件人备注" ["English Name"] | revoke ID | init | export | register]';
 
 async function settings() {
   const remoteFile = process.env.SITE_OPERATOR_CONFIG;
@@ -76,8 +76,10 @@ async function requestApi(config, path, options = {}) {
 function listInvites(config) {
   return config.live ? invitationList(config) : requestApi(config, '');
 }
-function issueInvite(config, label) {
-  return config.live ? config.pool.issue(label) : requestApi(config, '', { method: 'POST', body: { label } });
+function issueInvite(config, label, englishName) {
+  if (config.live) return config.pool.issue(label, englishName);
+  if (englishName) throw new PoolError('英文姓名适用于正式邀请管理。');
+  return requestApi(config, '', { method: 'POST', body: { label } });
 }
 function revokeInvite(config, id) {
   return config.live ? config.pool.revoke(id) : requestApi(config, '/' + encodeURIComponent(id) + '/revoke', { method: 'POST', body: {} });
@@ -134,7 +136,7 @@ async function serve(config) {
       }
       if (req.url === '/invitations') {
         const payload = await readBody(req);
-        const result = await issueInvite(config, payload?.label);
+        const result = await issueInvite(config, payload?.label, payload?.englishName);
         return json(res, 201, { ...result, site: config.site });
       }
       const revoke = /^\/invitations\/([a-zA-Z0-9_-]{1,80})\/revoke$/.exec(req.url);
@@ -160,8 +162,8 @@ async function serve(config) {
 async function main() {
   const [command = 'serve', ...args] = process.argv.slice(2);
   if (['-h', '--help', 'help'].includes(command)) return console.log(consoleHelp);
-  const takesArg = command === 'create' || command === 'revoke';
-  if (!['serve', 'list', 'create', 'revoke', 'init', 'export', 'register'].includes(command) || args.length !== (takesArg ? 1 : 0)) {
+  const validCounts = { serve: [0], list: [0], create: [1, 2], revoke: [1], init: [0], export: [0], register: [0] };
+  if (!Object.hasOwn(validCounts, command) || !validCounts[command].includes(args.length)) {
     throw new Error(consoleHelp);
   }
   const config = await settings();
@@ -170,12 +172,12 @@ async function main() {
     let result;
     switch (command) {
       case 'list': result = await listInvites(config); break;
-      case 'create': result = await issueInvite(config, args[0]); break;
+      case 'create': result = await issueInvite(config, args[0], args[1]); break;
       case 'revoke': result = await revokeInvite(config, args[0]); break;
       default:
         if (!config.live) throw new Error('请先设置正式站主配置 SITE_OPERATOR_CONFIG。');
         if (command === 'init') result = config.pool.init();
-        if (command === 'export') result = config.pool.exportGrants(join(repo, 'gate-config.json'), privateReleaseDir, join(repo, 'invitation-grants.json'));
+        if (command === 'export') result = await config.pool.exportGrants(join(repo, 'gate-config.json'), privateReleaseDir, join(repo, 'invitation-grants.json'));
         if (command === 'register') result = await registerCounts(config);
     }
     console.log(JSON.stringify({ target: config.live ? 'live' : 'local', site: config.site, ...result }, null, 2));
