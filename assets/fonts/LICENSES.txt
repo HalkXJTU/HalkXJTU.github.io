@@ -1,0 +1,9 @@
+Font Awesome Free 6.5.1 by Fonticons, Inc.
+Fonts: SIL Open Font License 1.1. Icons: CC BY 4.0. Code: MIT.
+https://fontawesome.com/license/free
+
+Academicons by James Walsh and Katja Bercic.
+Font: SIL Open Font License 1.1. Code: MIT.
+https://github.com/jpswalsh/academicons
+
+These local fonts provide the standard UI and academic service icons.

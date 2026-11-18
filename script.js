@@ -1,114 +1,6 @@
-// 英文原文位于 index.html，中文词典覆盖正文及可访问性属性。
-const ZH = {
-  "name": "荆昊",
-  "altname": "Hao Jing",
-  "nav.about": "关于我",
-  "nav.research": "研究方向",
-  "nav.pubs": "论文发表",
-  "nav.projects": "科研项目",
-  "nav.news": "动态",
-  "nav.contact": "联系方式",
-  "role": "建筑学本科生",
-  "supv": "在翟斌庆教授指导下开展研究",
-  "affil": "西安交通大学米兰理工联合学院",
-  "cv": "简历 CV",
-  "about.p1": "我是<strong>西安交通大学米兰理工联合学院</strong>的<strong>建筑学本科生</strong>。学院由西安交通大学与米兰理工大学联合办学，我在<strong>翟斌庆教授</strong>指导下开展研究。",
-  "about.p2": "我的研究将<strong>人工智能与地理空间方法</strong>应用于建筑与传统聚落，重点关注<strong>数字遗产、数字孪生及气候与灾害韧性</strong>。研究中结合无人机遥感、GIS、计算机视觉和可解释机器学习。",
-  "about.p3": "我正在寻找 AI + 建成环境、地理空间人工智能方向的<strong>研究型硕士 / 博士机会</strong>。",
-  "r1": "AI + 建筑",
-  "r2": "无人机遥感",
-  "r3": "GIS 与三维可视域",
-  "r4": "计算机视觉分割",
-  "r5": "可解释机器学习（XGBoost–SHAP）",
-  "r6": "数字孪生",
-  "r7": "数字遗产",
-  "r8": "城市分析",
-  "r9": "气候韧性",
-  "r10": "城市旅游",
-  "pubs.note": "* 共同第一作者（贡献相同）",
-  "p1.desc": "融合无人机正射影像、三维实景网格与点云，结合 YOLO 实例分割、三维 GIS 可视域分析与 XGBoost–SHAP，评估商洛 9 个传统村落的 749 个院落，并在陇南进行外部验证。",
-  "pj1.t": "融智萃典——数智技术支持下中意古村落的“地方智慧经验研习”及“标准化平台构建”研究",
-  "pj1.m": "国家级大学生创新训练项目（2025）<br>项目负责人 · 2025.06–2026.06<br>指导教师：翟斌庆教授",
-  "pj1.d": "通过多源数据采集、GIS、计算机视觉与机器学习，研究传统村落灾害风险、建筑风貌与保护条件的关系，建立地方智慧经验数据库与数字孪生展示平台。",
-  "pj2.t": "基于无人机三维重建与多源气象耦合的村落灾害监测预警与数字孪生推演平台",
-  "pj2.m": "大学生创新训练项目<br>2026.03 申报 · 计划周期：2026.05–2027.05<br>项目负责人 · 指导教师：翟斌庆教授",
-  "pj2.d": "无人机摄影测量 / 激光雷达、3D Gaussian Splatting、AI 识别与 Unreal Engine 5 灾害情景仿真，结合 MR/XR 沉浸式展示。",
-  "n1": "共同第一作者论文发表于 <i>Remote Sensing</i>：基于无人机多源数据的院落尺度视觉—材料完整性评估框架。",
-  "n2": "社会—生态系统脆弱性研究论文发表于 <i>Ecological Indicators</i>。",
-  "n3": "受邀参加 2025 世界人工智能大会（WAIC，上海）并作项目展示发言，介绍村落灾害防护数字孪生项目（无人机扫描、三维重建、UE5 仿真、XR）。",
-  "n6": "获中国国际大学生创新大赛西安交通大学校内赛“青年红色筑梦之旅”赛道银奖。",
-  "n7": "获西安交通大学第三十六届“腾飞杯”二等奖；获学创杯北京市数字营销模拟赛（本科组）一等奖。",
-  "nav.portfolio": "作品与平台",
-  "nav.awards": "获奖",
-  "pf1.t": "灾害数字孪生平台",
-  "pf1.d": "基于无人机三维重建（点云 / 网格 / 3D Tiles）的网页平台，用于村落灾害监测与数字孪生展示。",
-  "pf2.t": "走进56个村落",
-  "pf2.d": "展示传统村落的乡村数字网站。",
-  "pf3.t": "社会生态韧性观测工作台",
-  "pf3.d": "面向社会生态韧性观测的乡村数字网页工作台。",
-  "pf4.t": "无人机三维重建",
-  "pf4.d": "村落无人机航测与影像建模，生成点云、网格与 3D Tiles，作为数字孪生底座。",
-  "pf5.t": "YOLO 民居类型识别",
-  "pf5.d": "利用 YOLO 图像识别，探测房屋类型。",
-  "pf6.t": "开放日 UE5 / XR 展示",
-  "pf6.d": "在 Unreal Engine 5 中模拟洪涝 / 滑坡灾害过程，并开发混合现实体验，于西安交通大学校园开放日面向公众展出。",
-  "pf.visit": "访问网站 ↗ <span class=\"sr-only\">（在新标签页打开）</span>",
-  "a1": "2025 年中国国际大学生创新大赛校内赛“青年红色筑梦之旅”赛道 银奖（项目负责人）",
-  "a2": "西安交通大学第三十六届“腾飞杯”创新创业大赛创新赛道 二等奖",
-  "a3": "中国国际大学生创新大赛国际赛道 国家级金奖",
-  "a4": "中国国际大学生创新大赛国际赛道 国家级铜奖",
-  "a5": "西安交通大学第三十五届“腾飞杯” 一等奖",
-  "a6": "国家级大学生创新训练计划项目 结题答辩排名第一",
-  "n5": "在西安交通大学校园开放日展出村落数字孪生、灾害仿真与 XR 体验成果。",
-  "contact.l": "邮箱：",
-  "contact.s": "米兰理工邮箱：",
-  "a7": "学创杯北京市数字营销模拟赛（本科组）一等奖",
-  "p3.t": "从资源到行动：传统村落适灾韧性的作用条件——以甘肃文县白马藏族传统村落为例",
-  "p3.a": "戎晓, 翟斌庆, <a class=\"author-profile\" href=\"https://orcid.org/0009-0009-9396-4258\"><strong>荆昊</strong></a>, 万旭致, 侯婉莹, 刘可昕, 张永鑫",
-  "p3.v": "写作中 · 目标期刊：<i>International Journal of Disaster Risk Reduction</i>",
-  "footer": "© 2026 荆昊 · 版式参考 <a href=\"https://jinruii.github.io/\" lang=\"en\">Jin Rui</a>",
-  "skip": "跳转到正文",
-  "orcid.label": "荆昊的 ORCID 学术档案（在新标签页打开）",
-  "seo.description": "荆昊，西安交通大学米兰理工联合学院建筑学本科生，在翟斌庆教授指导下研究 AI 与建筑、数字遗产、无人机遥感、GIS 及气候与灾害韧性。",
-  "seo.imageAlt": "荆昊 / Hao Jing — AI + 建筑 — 西安交通大学米兰理工联合学院",
-  "intro.label": "AI + 建筑 · 地理空间研究",
-  "nav.label": "主导航",
-  "menu.open": "展开导航菜单",
-  "menu.close": "收起导航菜单",
-  "lang.switch": "Switch to English",
-  "photo.alt": "荆昊个人照片",
-  "pub.coFirst": "共同第一作者",
-  "pub.fifth": "第五作者",
-  "p1.doi": "DOI：基于无人机多源数据的院落尺度视觉—材料完整性评估框架",
-  "p1.pdf": "PDF：基于无人机多源数据的院落尺度视觉—材料完整性评估框架",
-  "p2.doi": "DOI：多民族地区社会—生态系统脆弱性及驱动因素的全链评估与预测",
-  "portfolio.intro": "从田野观测到数字工具。",
-  "pf1.alt": "乡村聚落数字孪生监测与智慧治理平台首页",
-  "pf2.alt": "传统村落数字网站概览",
-  "pf3.alt": "社会生态韧性数字观测工作台界面",
-  "pf4.alt": "无人机村落三维重建成果：点云、网格与建筑标注",
-  "pf5.alt": "YOLO 房屋类型识别结果与对比图表",
-  "pf6.alt": "西安交通大学校园开放日的村落数字孪生与 XR 展示",
-  "nav.home": "首页",
-  "sidebar.school": "米兰理工联合学院",
-  "sidebar.university": "西安交通大学",
-  "email.primary": "邮箱",
-  "email.polimi": "米兰理工邮箱",
-  "email.primaryLabel": "主邮箱：Halk_Jing@hotmail.com",
-  "email.polimiLabel": "米兰理工邮箱：hao1.jing@mail.polimi.it",
-  "about.education": "五年制建筑学本科 · 2023 级 · 预计 2028 年毕业",
-  "research.builtTitle": "建筑与遗产",
-  "research.builtTopics": "AI + 建筑 · 数字遗产 · 数字孪生",
-  "research.citiesTitle": "城市与韧性",
-  "research.citiesTopics": "城市分析 · 气候与灾害韧性 · 城市旅游",
-  "research.methodsTitle": "研究方法",
-  "research.methods": "无人机遥感 · 三维 GIS 与可视域分析 · 计算机视觉 · 可解释机器学习（XGBoost–SHAP）",
-  "research.resilience": "气候与灾害韧性"
-};
-
 document.documentElement.classList.add("js");
 
-// English text lives in HTML; attributes use the same translation keys.
+// English is authored in HTML; Chinese and Italian share the same keys.
 const translations = [...document.querySelectorAll("[data-i18n]")].map(element => ({
   element, key: element.dataset.i18n, english: element.innerHTML
 }));
@@ -118,70 +10,406 @@ const attributeTranslations = ["alt", "aria-label"].flatMap(attribute =>
     english: element.getAttribute(attribute)
   }))
 );
-const EN = { "menu.open": "Open menu", "menu.close": "Close menu" };
-const descriptions = {
-  en: "Hao Jing, an architecture undergraduate at the XJTU-POLIMI Joint School, researches AI + architecture, digital heritage, UAV remote sensing, GIS and resilience.",
-  zh: ZH["seo.description"]
+const EN = { "menu.open": "Open menu", "menu.close": "Close menu", "theme.dark": "Switch to dark theme", "theme.light": "Switch to light theme" };
+const DICTIONARIES = { zh: ZH, it: IT };
+const SUPPORTED_LANGUAGES = ["zh", "en", "it"];
+const LANGUAGE_INFO = {
+  zh: { html: "zh-CN", locale: "zh_CN", title: "荆昊 | 建筑与 GeoAI", description: ZH["seo.description"], imageAlt: ZH["seo.imageAlt"] },
+  en: { html: "en", locale: "en_US", title: document.title, description: document.querySelector('meta[name="description"]').content, imageAlt: document.querySelector('meta[property="og:image:alt"]').content },
+  it: { html: "it", locale: "it_IT", title: "Hao Jing | Architettura e GeoAI", description: IT["seo.description"], imageAlt: IT["seo.imageAlt"] }
 };
-const englishShareAlt = document.querySelector('meta[property="og:image:alt"]').content;
 const menuButton = document.querySelector(".menu-btn");
 const navLinks = document.querySelector(".nav-links");
-const languageButton = document.querySelector(".lang-toggle");
-const sectionLinks = [...document.querySelectorAll('.top-nav a[href^="#"]')];
+const languageButtons = [...document.querySelectorAll(".lang-toggle [data-lang]")];
+const sectionLinks = [...document.querySelectorAll('.section-nav a[href^="#"]')];
 let savedLanguage;
 try { savedLanguage = localStorage.getItem("lang"); } catch { /* Storage can be disabled. */ }
-let lang = ["zh", "en"].includes(savedLanguage) ? savedLanguage :
-  ((navigator.language || "").toLowerCase().startsWith("zh") ? "zh" : "en");
+const preferredLanguages = navigator.languages?.length ? navigator.languages : [navigator.language || "en"];
+const browserLanguage = preferredLanguages.map(value => value.toLowerCase().split("-")[0])
+  .find(value => SUPPORTED_LANGUAGES.includes(value)) || "en";
+const requestedLanguage = new URLSearchParams(location.search).get("lang");
+let lang = SUPPORTED_LANGUAGES.includes(requestedLanguage) ? requestedLanguage :
+  SUPPORTED_LANGUAGES.includes(savedLanguage) ? savedLanguage : browserLanguage;
+
+function translate(key, english) {
+  return DICTIONARIES[lang]?.[key] ?? english;
+}
 
 function updateMenuLabel() {
   const key = menuButton.getAttribute("aria-expanded") === "true" ? "menu.close" : "menu.open";
-  menuButton.setAttribute("aria-label", (lang === "zh" ? ZH : EN)[key]);
+  menuButton.setAttribute("aria-label", translate(key, EN[key]));
+}
+
+// Measure all translations in an inert copy at the actual responsive width.
+// Minimum sizes keep section/card starts stable without hiding or clipping text.
+const shell = document.querySelector(".site-shell");
+const englishByKey = new Map(translations.map(({ key, english }) => [key, english]));
+const compositeSelector = ".sidebar-affiliation, .education-affiliation, .sidebar-locations p, .contact-row";
+const slotCandidates = new Set(shell.querySelectorAll(compositeSelector));
+translations.forEach(({ element }) => {
+  if (shell.contains(element) && !element.closest(".sr-only")) slotCandidates.add(element.closest(compositeSelector) || element);
+});
+const layoutSlots = [...slotCandidates].filter(element =>
+  ![...slotCandidates].some(other => other !== element && other.contains(element))
+);
+layoutSlots.forEach((element, index) => {
+  element.dataset.layoutSlot = String(index);
+  element.classList.add("locale-slot");
+});
+
+function measureLabels(elements, probe) {
+  return elements.map(element => {
+    const style = getComputedStyle(element);
+    probe.style.font = style.font;
+    probe.style.fontWeight = "600";
+    probe.style.letterSpacing = style.letterSpacing;
+    return Math.ceil(Math.max(...SUPPORTED_LANGUAGES.map(language => {
+      probe.innerHTML = DICTIONARIES[language]?.[element.dataset.i18n] ?? englishByKey.get(element.dataset.i18n);
+      return probe.getBoundingClientRect().width;
+    })));
+  });
+}
+
+function stabilizeLayout() {
+  const probe = document.createElement("span");
+  probe.setAttribute("aria-hidden", "true");
+  probe.style.cssText = "position:fixed;left:-100000px;top:0;visibility:hidden;white-space:nowrap;";
+  document.body.append(probe);
+  try {
+    const labels = [...shell.querySelectorAll(".sidebar-locations strong")];
+    shell.style.setProperty("--location-label-width", `${Math.max(...measureLabels(labels, probe))}px`);
+  } finally { probe.remove(); }
+
+  const copy = shell.cloneNode(true);
+  copy.classList.add("layout-measure");
+  copy.style.width = `${shell.getBoundingClientRect().width}px`;
+  copy.setAttribute("inert", "");
+  copy.setAttribute("aria-hidden", "true");
+  const copies = [...copy.querySelectorAll("[data-layout-slot]")];
+  copies.forEach(element => element.style.removeProperty("--locale-slot-size"));
+  const textCopies = [...copy.querySelectorAll("[data-i18n]")];
+  const sizes = layoutSlots.map(() => 0);
+  document.body.append(copy);
+  try {
+    SUPPORTED_LANGUAGES.forEach(language => {
+      copy.lang = LANGUAGE_INFO[language].html;
+      textCopies.forEach(element => {
+        const key = element.dataset.i18n;
+        element.innerHTML = DICTIONARIES[language]?.[key] ?? englishByKey.get(key);
+      });
+      copies.forEach(element => {
+        const index = Number(element.dataset.layoutSlot);
+        sizes[index] = Math.max(sizes[index], Math.ceil(element.getBoundingClientRect().height));
+      });
+    });
+  } finally { copy.remove(); }
+  layoutSlots.forEach((element, index) => element.style.setProperty("--locale-slot-size", `${sizes[index]}px`));
+}
+
+// Apply after translations too: translated fragments recreate their anchors.
+function configureLinkTargets() {
+  document.querySelectorAll("a[href]").forEach(link => {
+    const href = link.getAttribute("href");
+    if (link.hasAttribute("data-version-link") || href.startsWith("#") || !/^https?:$/.test(new URL(link.href).protocol)) return;
+    link.target = "_blank";
+    link.relList.add("noopener", "noreferrer");
+    // These two links already include a translated new-tab announcement.
+    if (!link.matches(".orcid-link, .pf-link")) {
+      const descriptions = new Set((link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean));
+      descriptions.add("new-tab-hint");
+      link.setAttribute("aria-describedby", [...descriptions].join(" "));
+    }
+  });
 }
 
 function setLang(language) {
-  lang = language === "zh" ? "zh" : "en";
+  const scrollPosition = [window.scrollX, window.scrollY];
+  lang = SUPPORTED_LANGUAGES.includes(language) ? language : "en";
   translations.forEach(({ element, key, english }) => {
-    element.innerHTML = lang === "zh" ? (ZH[key] ?? english) : english;
+    element.innerHTML = translate(key, english);
   });
   attributeTranslations.forEach(({ element, attribute, key, english }) => {
-    element.setAttribute(attribute, lang === "zh" ? (ZH[key] ?? english) : english);
+    element.setAttribute(attribute, translate(key, english));
   });
-  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
-  document.title = lang === "zh" ? "荆昊 | AI + 建筑" : "Hao Jing | AI + Architecture";
+  configureLinkTargets();
+  const info = LANGUAGE_INFO[lang];
+  document.documentElement.lang = info.html;
+  document.title = info.title;
   const metadata = {
-    'meta[name="description"]': descriptions[lang],
-    'meta[property="og:description"]': descriptions[lang],
-    'meta[name="twitter:description"]': descriptions[lang],
-    'meta[property="og:title"]': document.title,
-    'meta[name="twitter:title"]': document.title,
-    'meta[property="og:image:alt"]': lang === "zh" ? ZH["seo.imageAlt"] : englishShareAlt,
-    'meta[name="twitter:image:alt"]': lang === "zh" ? ZH["seo.imageAlt"] : englishShareAlt,
-    'meta[property="og:locale"]': lang === "zh" ? "zh_CN" : "en_US",
-    'meta[property="og:locale:alternate"]': lang === "zh" ? "en_US" : "zh_CN"
+    'meta[name="description"]': info.description,
+    'meta[property="og:description"]': info.description,
+    'meta[name="twitter:description"]': info.description,
+    'meta[property="og:title"]': info.title,
+    'meta[name="twitter:title"]': info.title,
+    'meta[property="og:image:alt"]': info.imageAlt,
+    'meta[name="twitter:image:alt"]': info.imageAlt,
+    'meta[property="og:locale"]': info.locale
   };
   Object.entries(metadata).forEach(([selector, value]) => document.querySelector(selector).setAttribute("content", value));
-  document.querySelectorAll(".lang-toggle [data-l]").forEach(span => span.classList.toggle("on", span.dataset.l === lang));
+  const alternateLocales = SUPPORTED_LANGUAGES.filter(value => value !== lang).map(value => LANGUAGE_INFO[value].locale);
+  document.querySelectorAll('meta[property="og:locale:alternate"]').forEach((element, index) => {
+    element.setAttribute("content", alternateLocales[index]);
+  });
+  languageButtons.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.lang === lang)));
   updateMenuLabel();
+  updateThemeLabel();
+  publicationCarousels.forEach(carousel => carousel.updateLabels());
+  document.querySelectorAll(".side-links a").forEach(a => { a.title = a.getAttribute("aria-label") || a.textContent.trim(); });
   try { localStorage.setItem("lang", lang); } catch { /* Keep the page usable without storage. */ }
+  if (new URLSearchParams(location.search).has("lang")) {
+    const pageURL = new URL(location.href);
+    pageURL.searchParams.set("lang", lang);
+    history.replaceState(null, "", pageURL);
+  }
+  if (window.scrollY !== scrollPosition[1] || window.scrollX !== scrollPosition[0]) {
+    const root = document.documentElement;
+    const previous = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(...scrollPosition);
+    root.style.scrollBehavior = previous;
+  }
+}
+
+const compactMenu = window.matchMedia("(max-width: 860px)");
+const mouseHover = window.matchMedia("(hover: hover) and (pointer: fine)");
+let hoverPreview = false;
+let menuIntent = null;
+let closeTimer;
+
+function clearMenuIntent() {
+  clearTimeout(closeTimer);
+  menuIntent = null;
+}
+
+function openMenu(preview = false) {
+  clearMenuIntent();
+  hoverPreview = preview;
+  navLinks.classList.add("open");
+  menuButton.setAttribute("aria-expanded", "true");
+  updateMenuLabel();
 }
 
 function closeMenu(restoreFocus = false) {
+  clearMenuIntent();
+  hoverPreview = false;
   navLinks.classList.remove("open");
   menuButton.setAttribute("aria-expanded", "false");
   updateMenuLabel();
   if (restoreFocus) menuButton.focus();
 }
 
+// Menu aim geometry: protect the route to the nearest edge of the submenu.
+// BEGIN MENU GEOMETRY
+function pointInRect(point, rect) {
+  return point.x >= rect.left && point.x <= rect.right && point.y >= rect.top && point.y <= rect.bottom;
+}
+
+function pointInTriangle(point, a, b, c) {
+  const cross = (p, q, r) => (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x);
+  if (Math.abs(cross(a, b, c)) < 0.001) return false;
+  const signs = [cross(a, b, point), cross(b, c, point), cross(c, a, point)];
+  return signs.every(value => value >= -0.01) || signs.every(value => value <= 0.01);
+}
+
+function inSafeTriangle(point, origin, rect, buffer = 8) {
+  if (pointInRect(point, rect)) return true;
+  let a, b;
+  if (origin.y <= rect.top) {
+    a = { x: rect.left - buffer, y: rect.top + buffer };
+    b = { x: rect.right + buffer, y: rect.top + buffer };
+  } else if (origin.y >= rect.bottom) {
+    a = { x: rect.left - buffer, y: rect.bottom - buffer };
+    b = { x: rect.right + buffer, y: rect.bottom - buffer };
+  } else if (origin.x <= rect.left) {
+    a = { x: rect.left + buffer, y: rect.top - buffer };
+    b = { x: rect.left + buffer, y: rect.bottom + buffer };
+  } else {
+    a = { x: rect.right - buffer, y: rect.top - buffer };
+    b = { x: rect.right - buffer, y: rect.bottom + buffer };
+  }
+  return pointInTriangle(point, origin, a, b);
+}
+// END MENU GEOMETRY
+
+function armMenuIntent(event, destination) {
+  if (!hoverPreview || event.pointerType !== "mouse") return;
+  clearMenuIntent();
+  menuIntent = { origin: { x: event.clientX, y: event.clientY }, destination, deadline: performance.now() + 450, outside: false };
+  closeTimer = setTimeout(() => closeMenu(), 450);
+}
+
+menuButton.addEventListener("pointerenter", event => {
+  if (event.pointerType === "mouse" && compactMenu.matches && mouseHover.matches) {
+    if (!navLinks.classList.contains("open")) openMenu(true);
+    else clearMenuIntent();
+  }
+});
+menuButton.addEventListener("pointerleave", event => armMenuIntent(event, navLinks));
+navLinks.addEventListener("pointerenter", () => clearMenuIntent());
+navLinks.addEventListener("pointerleave", event => armMenuIntent(event, menuButton));
+navLinks.addEventListener("focusin", () => { clearMenuIntent(); hoverPreview = false; });
+document.addEventListener("pointermove", event => {
+  if (!menuIntent || event.pointerType !== "mouse") return;
+  const point = { x: event.clientX, y: event.clientY };
+  if (pointInRect(point, menuButton.getBoundingClientRect()) || pointInRect(point, navLinks.getBoundingClientRect())) {
+    clearMenuIntent();
+    return;
+  }
+  const safe = performance.now() < menuIntent.deadline && inSafeTriangle(point, menuIntent.origin, menuIntent.destination.getBoundingClientRect());
+  if (safe && menuIntent.outside) {
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => closeMenu(), Math.max(0, menuIntent.deadline - performance.now()));
+  } else if (!safe && !menuIntent.outside) {
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => closeMenu(), 90);
+  }
+  menuIntent.outside = !safe;
+}, { passive: true });
+
+
+const themeButton = document.querySelector(".theme-toggle");
+const topButton = document.querySelector(".back-to-top");
+let theme = "light";
+try { if (localStorage.getItem("academic-theme") === "dark") theme = "dark"; } catch { /* optional storage */ }
+document.documentElement.dataset.theme = theme;
+function updateThemeLabel() {
+  const dark = document.documentElement.dataset.theme === "dark";
+  const key = dark ? "theme.light" : "theme.dark";
+  themeButton.setAttribute("aria-label", translate(key, EN[key]));
+  themeButton.setAttribute("aria-pressed", String(dark));
+  themeButton.querySelector("i").className = `fa-solid ${dark ? "icon-sun" : "icon-moon"}`;
+}
+themeButton.addEventListener("click", () => {
+  theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = theme;
+  try { localStorage.setItem("academic-theme", theme); } catch { /* optional storage */ }
+  updateThemeLabel();
+});
+topButton.addEventListener("click", () => {
+  document.querySelector("#about").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  const about = document.querySelector("#about");
+  about.setAttribute("tabindex", "-1");
+  about.focus({ preventScroll: true });
+});
+window.addEventListener("scroll", () => { topButton.hidden = window.scrollY < 600; }, { passive: true });
+
+// Each article owns its slides. Hidden figures load only when selected.
+// Autoplay pauses off screen, on hover/focus, and for reduced-motion preferences.
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+const publicationCarousels = [...document.querySelectorAll(".pub-carousel")].map(element => {
+  const slides = [...element.querySelectorAll(".pub-slide")];
+  const dots = [...element.querySelectorAll(".carousel-dot")];
+  const dotStrip = element.querySelector(".carousel-dots");
+  const playButton = element.querySelector(".carousel-play");
+  const counter = element.querySelector(".carousel-count");
+  const status = element.querySelector(".carousel-status");
+  let index = 0;
+  let paused = reducedMotion.matches;
+  let hovering = false;
+  let focused = false;
+  let visible = false;
+  let timer;
+  let touchStart;
+  let suppressImageClick = false;
+
+  function updateLabels() {
+    const stopped = paused;
+    const key = stopped ? "gallery.play" : "gallery.pause";
+    playButton.setAttribute("aria-label", translate(key, key === "gallery.play" ? "Play slideshow" : "Pause slideshow"));
+    playButton.setAttribute("aria-pressed", String(!stopped));
+    playButton.querySelector("i").className = `fa-solid ${stopped ? "icon-play" : "icon-pause"}`;
+    status.textContent = "";
+  }
+  function schedule() {
+    clearTimeout(timer);
+    if (!paused && !hovering && !focused && visible && !document.hidden) {
+      timer = setTimeout(() => { show(index + 1); schedule(); }, 6000);
+    }
+  }
+  function show(next, announce = false) {
+    index = (next + slides.length) % slides.length;
+    slides.forEach((slide, i) => { slide.hidden = i !== index; });
+    dots.forEach((dot, i) => {
+      dot.setAttribute("aria-pressed", String(i === index));
+      dot.tabIndex = i === index ? 0 : -1;
+    });
+    counter.textContent = `${index + 1} / ${slides.length}`;
+    const activeDot = dots[index];
+    const left = activeDot.offsetLeft;
+    if (left < dotStrip.scrollLeft) dotStrip.scrollLeft = left;
+    else if (left + activeDot.offsetWidth > dotStrip.scrollLeft + dotStrip.clientWidth) {
+      dotStrip.scrollLeft = left + activeDot.offsetWidth - dotStrip.clientWidth;
+    }
+    if (announce) status.textContent = `${index + 1} / ${slides.length}: ${slides[index].querySelector("figcaption").textContent}`;
+  }
+  function select(next) { show(next, true); schedule(); }
+  element.querySelector(".carousel-prev").addEventListener("click", () => select(index - 1));
+  element.querySelector(".carousel-next").addEventListener("click", () => select(index + 1));
+  dots.forEach((dot, i) => dot.addEventListener("click", () => select(i)));
+  playButton.addEventListener("click", () => { paused = !paused; updateLabels(); schedule(); });
+  element.addEventListener("mouseenter", () => { hovering = true; schedule(); });
+  element.addEventListener("mouseleave", () => { hovering = false; schedule(); });
+  element.addEventListener("focusin", () => { focused = true; schedule(); });
+  element.addEventListener("focusout", event => {
+    focused = element.contains(event.relatedTarget);
+    schedule();
+  });
+  element.addEventListener("keydown", event => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    select(event.key === "Home" ? 0 : event.key === "End" ? slides.length - 1 : index + (event.key === "ArrowRight" ? 1 : -1));
+    if (event.target.classList.contains("carousel-dot")) dots[index].focus({ preventScroll: true });
+  });
+  element.querySelector(".pub-slides").addEventListener("pointerdown", event => {
+    suppressImageClick = false;
+    if (event.pointerType === "touch" && !event.target.closest("button")) touchStart = { x: event.clientX, y: event.clientY };
+  }, { passive: true });
+  element.querySelector(".pub-slides").addEventListener("pointerup", event => {
+    if (!touchStart) return;
+    const dx = event.clientX - touchStart.x;
+    const dy = event.clientY - touchStart.y;
+    touchStart = null;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      suppressImageClick = true;
+      select(index + (dx < 0 ? 1 : -1));
+    }
+  }, { passive: true });
+  element.addEventListener("click", event => {
+    if (suppressImageClick && event.target.closest(".pub-image-link")) event.preventDefault();
+    suppressImageClick = false;
+  }, true);
+  element.addEventListener("pointercancel", () => { touchStart = null; });
+  document.addEventListener("visibilitychange", schedule);
+  reducedMotion.addEventListener("change", () => { if (reducedMotion.matches) paused = true; updateLabels(); schedule(); });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting;
+      schedule();
+    }, { threshold: 0.2 }).observe(element);
+  } else { visible = true; schedule(); }
+  show(0);
+  return { updateLabels };
+});
+
+stabilizeLayout();
 setLang(lang);
-languageButton.addEventListener("click", () => setLang(lang === "zh" ? "en" : "zh"));
-menuButton.addEventListener("click", () => {
-  const open = navLinks.classList.toggle("open");
-  menuButton.setAttribute("aria-expanded", String(open));
-  updateMenuLabel();
+let resizeFrame;
+window.addEventListener("resize", () => {
+  cancelAnimationFrame(resizeFrame);
+  resizeFrame = requestAnimationFrame(stabilizeLayout);
+});
+document.fonts?.ready.then(stabilizeLayout);
+document.fonts?.addEventListener("loadingdone", stabilizeLayout);
+languageButtons.forEach(button => button.addEventListener("click", () => setLang(button.dataset.lang)));
+menuButton.addEventListener("click", event => {
+  if (hoverPreview) openMenu();
+  else if (navLinks.classList.contains("open")) closeMenu();
+  else openMenu();
+  if (event.detail === 0 && navLinks.classList.contains("open")) navLinks.querySelector("a").focus();
 });
 sectionLinks.forEach(link => link.addEventListener("click", () => {
   closeMenu();
-  // Keep keyboard focus in the selected section after the mobile menu collapses.
+  sectionLinks.forEach(item => { if (item === link) item.setAttribute("aria-current", "location"); else item.removeAttribute("aria-current"); });
   const section = document.querySelector(link.getAttribute("href"));
   section.setAttribute("tabindex", "-1");
   section.focus({ preventScroll: true });
@@ -190,11 +418,10 @@ document.addEventListener("keydown", event => {
   if (event.key === "Escape" && navLinks.classList.contains("open")) closeMenu(true);
 });
 document.addEventListener("click", event => {
-  if (!event.target.closest(".top-nav")) closeMenu();
+  if (!event.target.closest(".view-toolbar, .sidebar-nav")) closeMenu();
 });
-window.matchMedia("(max-width: 900px)").addEventListener("change", () => closeMenu());
+compactMenu.addEventListener("change", () => closeMenu());
 
-// Mark the section currently being read without adding a scroll listener.
 if ("IntersectionObserver" in window) {
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
