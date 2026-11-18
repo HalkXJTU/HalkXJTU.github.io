@@ -1,3 +1,5 @@
 .preview/
 __pycache__/
 /design-qa.md
+/AGENTS.md
+.wrangler/
