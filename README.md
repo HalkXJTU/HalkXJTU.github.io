@@ -1,77 +1,36 @@
-# 荆昊（Hao Jing）个人学术主页
+# 学术主页与专属邀请
 
-纯静态 HTML、CSS、JavaScript，无框架、无构建步骤或第三方运行时依赖。现在同时保留新旧两套版式，内容与代码独立维护，图片和翻译词典共用。
+站点的新版和旧版仍是静态页面，可部署到 GitHub Pages。访客使用各自收到的邀请码解锁，两版共用同一阅读会话。独立的验证服务保存邀请码摘要和累计次数，站主在邀请邮件中说明计数方式。
 
-## 新旧版
+## 本机预览与邀请管理
 
-| 版本 | 入口 | 页面与布局文件 |
-| --- | --- | --- |
-| 新版（默认） | `/` 或 `index.html` | `index.html`、`styles.css`、`script.js` |
-| 旧版 | `legacy.html` | `legacy.html`、`legacy.css`、`legacy.js` |
+使用 Node.js 24。在发布目录运行 `node tools/preview.mjs`，再运行 `node tools/invitations.mjs`。前者提供 [访客预览](http://127.0.0.1:4173/)，后者提供[仅限本机的邀请管理](http://127.0.0.1:4174/)。打开管理页，填写只够自己识别收件人的备注，即可生成专属邀请码、复制邀请文字、查看成功解锁次数或停用邀请码。
 
-- 新版参考 [Wenyu Zhang 的主页](https://wenyuzhang-9.github.io/)：380px 固定侧栏、圆形照片、纵向导航、Georgia 衬线标题、系统无衬线正文、灰蓝配色、简介与动态面板、交替浅色内容区；提供可记忆的深浅色外观。手机端在 860px 及以下改为顶部工具栏与折叠菜单。
-- 旧版保留此前参考 [Jin Rui 的主页](https://jinruii.github.io/) 的 Arial 正文、蓝色链接、紫红色强调、250px 侧栏、72px 栏间距与 820px 正文。只增加版本按钮，并为额外按钮调整窄屏导航折叠点。
-- 右上角“旧版 / 新版”在当前标签页切换，通过 `?lang=zh|en|it` 和栏目锚点保留语言及所在栏目；旧版没有独立教育栏目，因此新版 `#education` 切到旧版时落在简介中的教育信息。根网址始终默认显示新版。
-- 两版共用 `translations.js` 的中、意词典；英文分别写在各自 HTML 中。调整事实信息时同时维护两版 HTML 及词典，正式论文、项目、奖项、动态和六张作品卡片的事实保持一致。
-- `version-switch.css`、`version-switch.js` 是共用切换组件。版本切换链接是站内页面导航，使用当前标签页；网页、论文、PDF 等资源仍使用新标签页。
-- 新版图标使用本地 Font Awesome Free 和 Academicons 字体，文件及授权在 `assets/fonts/`，不依赖在线 CDN；个人照片和作品图片全部沿用自己的素材。
+站主也可以在本机预览的同一输入框使用已配置的四位个人密码。预览后台将站主的解锁次数单独列出。要设置或更换此密码，可在 PowerShell 7 中运行 `(Read-Host '新的四位密码' -MaskInput) | node tools/preview.mjs --set-owner-pin`。正式网站使用为各位收件人生成的邀请码。
 
-## 本地预览与部署
+本机模式使用独立的 SQLite 数据库和私有配置。Windows 默认为 `%LOCALAPPDATA%\HalkHomepage\access-local`。保管此目录及 `%LOCALAPPDATA%\HalkHomepage\releases` 的私有发布密钥。有密文的完整 ZIP 供部署使用，单独解压 ZIP 无法恢复访问凭据。新设备需要从本人的私有备份恢复密钥，或从私有原稿重新打包。
 
-在仓库根目录运行 `python -m http.server 4173 --bind 127.0.0.1`，然后访问 `http://127.0.0.1:4173/`。
+## 正式发信与线上统计
 
-本仓库为 `HalkXJTU/HalkXJTU.github.io`。GitHub Pages 使用 `main` 分支根目录，推送后由 GitHub Pages 自动发布至 https://halkxjtu.github.io/ 。无需安装依赖或运行构建命令。
+1. 按[部署说明](access-service/README.md)发布验证服务，使用独立的生产数据库和随机管理密钥。Pages 和 Worker 均配置好后再发送邀请。
+2. 将本次发布密钥文件交给 **Worker Secrets** 的 `SITE_RELEASE`。可用 PowerShell 在本机授权的 Wrangler 工作目录运行下方命令。文件路径中的发布编号来自公开 `gate-config.json` 的 `id`。密钥文件、管理员令牌、名单、原始邀请码和数据库只保存在站主私有环境。
+3. 在公开 `gate-config.json` 里设置 `accessEndpoint` 为已部署 Worker 的 HTTPS 地址，路径为 `/access/unlock`。保持 `id`、`manifestIv` 和同一批 `vault/` 文件配套。仅设置站主工具的地址不能代替访客端的此项配置。
+4. 在发布仓库之外准备站主管理配置 JSON，包含 `API_BASE`（Worker 的 HTTPS 地址加 `/access`）、`PUBLIC_SITE_URL`（公开主页的 HTTPS 地址）、`ADMIN_TOKEN`（同 Worker 管理 Secret）。将绝对路径赋给环境变量 `SITE_OPERATOR_CONFIG` 后启动 `node tools/invitations.mjs`。本机后台显示“线上主页”，此时生成的邀请与统计来自正式数据。
+5. 每位收件人使用各自的码，邮件附主页链接、专属码及按码计数的简短说明。多位收件人分别拟稿。也可运行 `node tools/invitations.mjs create "收件人备注"` 和 `node tools/invitations.mjs list`。每个码只在生成时显示一次。
 
-## 中、英、意三语维护
+```powershell
+$siteConfigFile = Read-Host '输入本次公开发布文件 gate-config.json 的完整路径'
+$releaseId = (Get-Content -Raw -LiteralPath $siteConfigFile | ConvertFrom-Json).id
+$releaseFile = Join-Path $env:LOCALAPPDATA "HalkHomepage\releases\$releaseId.json"
+Get-Content -Raw -LiteralPath $releaseFile | npx wrangler secret put SITE_RELEASE
+```
 
-- 英文正文写在两版 HTML 的 `data-i18n="键名"` 元素内，中文和意大利文分别写在 `translations.js` 的 `ZH`、`IT` 词典中。
-- 图片说明使用 `data-i18n-alt`，控件标签使用 `data-i18n-aria-label`；英文属性值直接写入 HTML，中、意两种语言使用对应词典键。
-- 新增或修改内容时同步维护三种语言。正式发表的英文论文题名、作者署名、期刊名保留原文，第三篇的意大利文题名标注为暂译名。
-- 顶栏可直接点击“中 / EN / IT”。语言选择使用 `lang` 键保存到 localStorage，支持 `zh`、`en`、`it`，兼容原有的中英文选择；首次访问匹配浏览器首选语言，未匹配时使用英文。
-- 禁用存储时仍可切换。所选按钮的 `aria-pressed`、HTML 语言、页面标题、摘要及 Open Graph 当前和备用语言均随切换更新。语言选项本身使用各语言的原生名称与读音标签。
-- 分享爬虫通常不执行 JavaScript，因此初始 HTML 中保留英文元数据；分享图片同时包含中英文姓名。
-- 侧栏展示姓名、“Undergraduate Researcher | Architecture & GeoAI”、联合学院及两所大学，并按本人提供的信息显示常驻西安、家乡北京。学校名称和地点标签使用独立的三语词典键；导师放在简介中。
-- 简介分别介绍身份与导师、研究主题，学制和毕业时间单列。研究区将研究主题与方法分别列出，避免把所有关键词混成一段。
-- 项目元数据中的 `<br>` 表示有意分行，修改三种语言时保持项目级别、时间与职责的层次。
-- 样式和脚本 URL 带内容版本参数；发布 CSS / JavaScript 更新时同步更新对应参数，避免浏览器继续显示旧版本。
-- 旧版桌面八项导航等宽居中；新版使用固定侧栏导航。两版正文、侧栏、项目和作品卡片在当前屏宽下测量三语的自然高度，以 `min-block-size` 预留空间。短语言保留相同空间，切换时后续区块不跳动；窗口或字体加载变化时重新测量，不截断长文本。
-- 导航、语言按钮、侧栏联系链接和 DOI / PDF 按钮的实际热区至少 44px 高，相邻操作组不留点击缝隙。窄屏菜单覆盖展开，不推挤正文；鼠标悬停展开时，用通往面板的安全三角保护斜向移动路径。触屏点击和键盘 Enter / Escape 操作继续有效。
+正确的邀请码获准解锁时计一次。普通刷新、切换语言、切换版式不增加次数。短时间内重试同一网络请求会去重。转发会沿用同一码的计数。停用可阻止后续解锁，已获准的标签页会话最长持续两小时。
 
-## 图片和分享信息
+## 更新内容
 
-- 原始 JPG 保留为后备与维护源文件；`picture` 使用 640 / 1080 像素 WebP 配合 `srcset` 与 `sizes` 按屏幕选择图片。
-- 作品集图片使用懒加载、异步解码与固定宽高，侧栏个人照片优先加载。
-- 侧栏照片使用 `assets/profile.jpg`，并提供 360 / 720 像素 WebP 版本。旧版照片框为桌面 188 × 242px、手机 156 × 202px；新版为桌面 180px、手机 120px 圆形裁切。
-- 新增或替换图片时同步更新 WebP、宽高、中英意 alt。
-- `assets/favicon.svg` 是主图标，另有 PNG 和 Apple touch icon。
-- `assets/social-card.png` 为 1200 × 630 分享图片。更换域名时同步修改 canonical、Open Graph、Twitter 元数据中的绝对 URL。
+在独立私有目录编辑原稿。运行 `node tools/pack-site.mjs "原稿目录" "新的输出目录"`，得到 `vault/` 与 `gate-config.json`。设置环境变量 `SITE_ACCESS_ENDPOINT` 可将经确认的生产验证地址写入发布配置。对应 AES-256 密钥只写入仓库外的私有 `releases` 目录。将密钥部署到验证服务，然后发布本批静态文件。保留生产数据库和 `INVITE_HMAC_KEY` 即可延续已有邀请与计数。
 
-## 论文和作品链接
+主页历史上公开的内容可能仍保存在以往提交或他人的副本中。站点代码不收集访客 IP、邮箱或页面浏览轨迹。
 
-- 侧栏 GitHub 指向 `https://github.com/HalkXJTU`；已核对公开账号的联合学院建筑学简介、个人网站地址及本主页仓库归属。
-- 侧栏 Google Scholar 使用本人确认的 `https://scholar.google.com/citations?user=rJ9TlFcAAAAJ&hl=en`。该资料页中的文章由本人另行维护，主页论文列表不随其变动。
-- 网页和文档链接统一在新标签页打开，保留当前主页；页内锚点仍在当前页定位，邮箱链接仍调用邮件应用。HTML 和翻译片段中保留 `target="_blank" rel="noopener noreferrer"`，语言切换后统一重新应用链接规则，并提供三语的新标签页提示。
-- 论文作者列表使用 `strong` 强调本人；星号表示共同第一作者。
-- 第一篇论文的 PDF 按钮指向出版社公开入口；第二篇指向已核实的米兰理工公开论文库 PDF。两版版式分别维护，旧版仍保留此前的论文文本列表。
-- 新版论文区使用左侧图片轮播、右侧题名／作者／期刊／摘要／DOI 和 PDF。第一篇包括首页与图 1–17，第二篇包括首页与图 1–9；摘要是依据正式论文撰写的三语简述，未发表稿另列，不制作虚构封面。
-- 原始论文 PDF 只用于本地提取，站点仅发布压缩 WebP；缩略图合计约 1.13 MB，大图约 4.28 MB。未激活的图片保持隐藏并懒加载，点击图片在新标签页查看完整图。页码与来源见 `assets/publications/manifest.json` 和 `SOURCES.md`。
-- 轮播支持箭头、圆点、键盘方向键／Home／End、触屏横滑；正常偏好下每 6 秒切换，可暂停。离屏、页面隐藏、悬停或键盘聚焦时停止自动轮播；系统偏好减少动态效果时默认不自动播放，仍可手动启动。
-- 新版教育区分为西安交大与米兰理工两张浅酒红／浅蓝卡片，使用学校官网的标志素材。两张卡片明确为同一联合培养项目，共用已确认的学制说明，不推断独立入学日期或第二学位。
-- 新版奖项按时间、奖项、赛事背景分层；联系区集中展示两个邮箱及 Google Scholar、ORCID、GitHub。
-- 未确认的作品链接不显示按钮。外部作品网站在新标签页打开，并有相应的屏幕阅读器提示。
-- 不推断投稿结果、立项级别、奖项月份或新的个人资料。
-
-## 仍待补充（页面中隐藏）
-
-- 本人 CV 文件。ORCID 已使用本人提供的 `0009-0009-9396-4258`。
-- 其余作品卡片的真实网址。
-- 第三篇论文的正式英文题名、作者官方英文署名及明确投稿状态；当前英文题名为工作译名，其他作者英文姓名为拼音译写。
-- 2026 年项目的正式立项级别，以及现有内容中未明确的奖项月份。
-
-仅在确认信息后取消或替换 HTML 注释。不要使用导师的 ORCID，不要上传身份证号、电话、原始隐私材料、专利技术交底书或尚未确认的软件著作权信息。
-
-## 提交前检查
-
-预览桌面和手机端的中文、英文、意大利文；检查语言记忆、图片加载、长标题换行和横向溢出。用键盘验证跳转正文、导航、三个语言按钮、资源链接及菜单 Escape 关闭。菜单收起后 `aria-expanded` 应为 `false`；减少动态效果偏好下不播放平滑滚动或卡片动画。
-
-`.preview/` 为本地预览资料目录，`design-qa.md` 为本地视觉核验记录；均由 `.gitignore` 排除，不随站点发布。
+入口构图曾参考 SO called 的 [Animated Characters Login Page](https://21st.dev/@socolled/components/animated-characters-login-page)，目前的角色图形和指针定位逻辑由站点本地实现。
