@@ -10,7 +10,7 @@
       languages: 'Language', reveal: 'Show invitation code', conceal: 'Hide invitation code',
       empty: 'Enter your invitation code.', wrong: 'This invitation code is invalid or no longer active.',
       limited: 'Too many attempts. Please try again later.', updated: 'The homepage has been updated. Refresh the page and try again.',
-      unavailable: 'The invitation service is unavailable. Please try again later.',
+      unavailable: 'The homepage could not be opened. Please refresh and try again.',
       network: 'The page couldn’t be loaded. Please try again.',
       unsupported: 'Open the secure link in an up-to-date browser.'
     },
@@ -22,7 +22,7 @@
       languages: '选择语言', reveal: '显示邀请码', conceal: '隐藏邀请码',
       empty: '请输入邀请码。', wrong: '邀请码无效或已停用，请核对后重试。',
       limited: '尝试次数过多，请稍后再试。', updated: '主页已更新，请刷新页面后重试。',
-      unavailable: '邀请验证服务暂时不可用，请稍后再试。',
+      unavailable: '主页暂时无法打开，请刷新后重试。',
       network: '页面未能加载，请重试。', unsupported: '请使用新版浏览器打开安全链接。'
     },
     it: {
@@ -33,7 +33,7 @@
       languages: 'Lingua', reveal: 'Mostra il codice', conceal: 'Nascondi il codice',
       empty: 'Inserisci il codice di invito.', wrong: 'Il codice di invito non è valido o non è più attivo.',
       limited: 'Troppi tentativi. Riprova più tardi.', updated: 'La pagina è stata aggiornata. Ricaricala e riprova.',
-      unavailable: 'Il servizio di verifica degli inviti non è disponibile. Riprova più tardi.',
+      unavailable: 'Impossibile aprire la pagina. Ricaricala e riprova.',
       network: 'Impossibile caricare la pagina. Riprova.',
       unsupported: 'Apri il link sicuro in un browser aggiornato.'
     }

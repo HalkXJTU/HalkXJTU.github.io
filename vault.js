@@ -3,6 +3,9 @@
   const scope = new URL("./", document.currentScript.src);
   const storageName = "private-reading:" + scope.pathname;
   const lifetime = 2 * 60 * 60 * 1000;
+  const previewOrigin = "http://127.0.0.1:4173";
+  const inviteFormat = /^INV-[A-Za-z0-9_-]{22}$/;
+  const encoder = new TextEncoder();
   const gate = Boolean(document.querySelector('script[src*="gate-ui.js"]'));
   const canDecrypt = window.isSecureContext && Boolean(window.crypto?.subtle) && /^https?:$/.test(location.protocol);
   const decoder = new TextDecoder();
@@ -44,22 +47,7 @@
   async function decrypt(key, iv, ciphertext) {
     return crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(iv) }, key, ciphertext);
   }
-  function inviteEndpoint(settings) {
-    const loopback = ["127.0.0.1", "localhost", "[::1]"].includes(scope.hostname);
-    if (!settings.accessEndpoint && !loopback) throw new Error("unavailable");
-    const endpoint = new URL(settings.accessEndpoint || "/access/unlock", scope);
-    const localPreview = loopback && endpoint.origin === scope.origin && endpoint.protocol === "http:";
-    if ((endpoint.protocol !== "https:" && !localPreview) || endpoint.username || endpoint.password || endpoint.search || endpoint.hash) {
-      throw new Error("unavailable");
-    }
-    return endpoint;
-  }
-  async function requestGrant(code, settings) {
-    const endpoint = inviteEndpoint(settings);
-    const ownerPreview = scope.origin === "http://127.0.0.1:4173" && endpoint.origin === scope.origin;
-    if (!/^INV-[A-Za-z0-9_-]{22}$/.test(code) && !(ownerPreview && /^\d{4}$/.test(code))) {
-      throw new Error("wrong");
-    }
+  async function previewGrant(code, settings) {
     // Reuse the receipt on a retry when the server may already have counted
     // this tab's grant. Neither the code nor the receipt is saved in storage.
     if (!attempt || attempt.code !== code || attempt.release !== settings.id) {
@@ -68,7 +56,7 @@
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 15000);
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch(new URL("/access/unlock", scope), {
         method: "POST", mode: "cors", credentials: "omit", redirect: "error",
         cache: "no-store", referrerPolicy: "no-referrer", signal: controller.signal,
         headers: { "Content-Type": "application/json" }, body: JSON.stringify(attempt)
@@ -83,6 +71,100 @@
       return { id: grant.id, key: grant.key, until: Date.now() + lifetime };
     } finally { clearTimeout(timer); }
   }
+  function digest(domain, code) {
+    return crypto.subtle.digest("SHA-256", encoder.encode(domain + ":v1:" + code));
+  }
+  function base64(buffer) {
+    return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+  }
+  async function readGrant(code, settings) {
+    if (scope.origin === previewOrigin && !settings.inviteGrants && !settings.accessEndpoint) {
+      if (!inviteFormat.test(code) && !/^\d{4}$/.test(code)) throw new Error("wrong");
+      return { state: await previewGrant(code, settings) };
+    }
+    if (!inviteFormat.test(code)) throw new Error("wrong");
+    if (settings.inviteGrants !== "invitation-grants.json") throw new Error("unavailable");
+    const table = await (await resource(settings.inviteGrants)).json();
+    if (table.version !== 1 || table.release !== settings.id) throw new Error("updated");
+    const id = Array.from(new Uint8Array(await digest("id", code), 0, 16),
+      byte => byte.toString(16).padStart(2, "0")).join("");
+    const grant = table.grants?.[id];
+    if (!grant) throw new Error("wrong");
+    const wrap = await crypto.subtle.importKey("raw", await digest("wrap", code), "AES-GCM", false, ["decrypt"]);
+    const raw = await crypto.subtle.decrypt({
+      name: "AES-GCM", iv: bytes(grant.iv), additionalData: encoder.encode(id + "." + settings.id)
+    }, wrap, bytes(grant.wrapped));
+    if (raw.byteLength !== 32) throw new Error("unavailable");
+    const receipt = base64(await digest("count", code)).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/, "");
+    return { state: { id: settings.id, key: base64(raw), until: Date.now() + lifetime }, receipt };
+  }
+
+  const queuePrefix = "homepage-visit:" + scope.pathname + ":";
+  const pending = new Map();
+  const visitLifetime = 24 * 60 * 60 * 1000;
+  let flushing = false;
+  function forgetVisit(visit) {
+    pending.delete(visit);
+    try { localStorage.removeItem(queuePrefix + visit); } catch { /* Memory-only queue. */ }
+  }
+  function queuedVisits() {
+    const records = new Map(pending);
+    try {
+      for (const key of Object.keys(localStorage)) {
+        if (!key.startsWith(queuePrefix)) continue;
+        const visit = key.slice(queuePrefix.length);
+        try { records.set(visit, JSON.parse(localStorage.getItem(key))); } catch { forgetVisit(visit); }
+      }
+    } catch { /* Private browsing can disable local storage. */ }
+    const entries = [];
+    const now = Date.now();
+    for (const [visit, record] of records) {
+      if (!/^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(visit) ||
+          !/^[\w-]{43}$/.test(record?.receipt) || !Number.isFinite(record?.time) ||
+          record.time > now || now - record.time >= visitLifetime) {
+        forgetVisit(visit);
+      } else entries.push([visit, record]);
+    }
+    entries.sort((a, b) => a[1].time - b[1].time);
+    for (const [visit] of entries.splice(0, Math.max(0, entries.length - 64))) forgetVisit(visit);
+    return entries;
+  }
+  async function flushVisits() {
+    if (flushing) return;
+    const entries = queuedVisits();
+    if (!entries.length || navigator.onLine === false) return;
+    flushing = true;
+    try {
+      const settings = await config();
+      if (!settings.statsEndpoint || settings.inviteGrants !== "invitation-grants.json") return;
+      const endpoint = new URL(settings.statsEndpoint);
+      if (endpoint.protocol !== "https:" || endpoint.pathname !== "/access/visits" ||
+          endpoint.username || endpoint.password || endpoint.search || endpoint.hash) return;
+      for (const [visit, {receipt}] of entries) {
+        const response = await fetch(endpoint, {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({receipt, visit}),
+          mode: "cors", credentials: "omit", cache: "no-store", redirect: "error", referrerPolicy: "no-referrer",
+          keepalive: true, signal: AbortSignal.timeout(8000)
+        });
+        if (response.ok || [400, 403, 410].includes(response.status)) forgetVisit(visit);
+        else break;
+      }
+    } catch { /* Resume the same visit IDs when online or on the next page. */ }
+    finally { flushing = false; }
+  }
+  function recordVisit(receipt) {
+    const visit = crypto.randomUUID();
+    const record = { receipt, time: Date.now() };
+    try { localStorage.setItem(queuePrefix + visit, JSON.stringify(record)); }
+    catch { pending.set(visit, record); }
+    void flushVisits();
+  }
+  addEventListener("online", flushVisits);
+  addEventListener("pageshow", flushVisits);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") void flushVisits();
+  });
+  void flushVisits();
   function exchange(worker, message, timeout = 6000) {
     return new Promise((resolve, reject) => {
       const channel = new MessageChannel();
@@ -221,7 +303,7 @@
 
   // Embedded browsers sometimes disable service workers while still supporting WebCrypto.
   // Render the same HTML locally using temporary blob URLs in that case.
-  async function materialize(state, settings, path, url, animate) {
+  async function materialize(state, settings, path, url, animate, onOpened) {
     const key = await crypto.subtle.importKey("raw", bytes(state.key), "AES-GCM", false, ["decrypt"]);
     async function read(file, iv) {
       return decrypt(key, iv, await (await resource(file)).arrayBuffer());
@@ -277,12 +359,13 @@
     if (animate) await window.gateUI.opened();
     history.replaceState(null, "", url);
     window.privateReadingAssets = blobFor;
+    onOpened?.();
     document.open();
     document.write("<!doctype html>\n" + page.documentElement.outerHTML);
     document.close();
   }
 
-  async function openSite(state, settings, animate) {
+  async function openSite(state, settings, animate, onOpened) {
     const url = destination();
     const path = currentEntry();
     if (!["", "index.html", "legacy.html"].includes(relativeFile(url.href))) url.pathname = new URL(path, scope).pathname;
@@ -293,11 +376,12 @@
       if (reply) {
         if (animate) await window.gateUI.opened();
         url.searchParams.set("__entry", reply.ticket);
+        onOpened?.();
         location.replace(url);
         return;
       }
     }
-    await materialize(state, settings, path, url, animate);
+    await materialize(state, settings, path, url, animate, onOpened);
   }
   window.unlockSite = async value => {
     if (submitting) return;
@@ -308,9 +392,9 @@
     window.gateUI.busy(true);
     try {
       const settings = await config();
-      const state = await requestGrant(code, settings);
+      const { state, receipt } = await readGrant(code, settings);
       remember(state);
-      await openSite(state, settings, true);
+      await openSite(state, settings, true, receipt ? () => recordVisit(receipt) : undefined);
       attempt = null;
     } catch (error) {
       if (error.message === "wrong" || error.message === "updated") attempt = null;

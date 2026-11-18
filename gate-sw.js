@@ -2,7 +2,7 @@
 const scopeURL = new URL(self.registration.scope);
 const sessions = new Map();
 const handoffs = new Map();
-const visitorScripts = new Set(["gate-ui.js", "gate-ui.css", "vault.js", "gate-sw.js", "gate-config.json", "robots.txt", ".nojekyll"]);
+const visitorScripts = new Set(["gate-ui.js", "gate-ui.css", "vault.js", "gate-sw.js", "gate-config.json", "invitation-grants.json", "robots.txt", ".nojekyll"]);
 const tabLifetime = 2 * 60 * 60 * 1000;
 
 self.addEventListener("install", event => event.waitUntil(self.skipWaiting()));
@@ -176,7 +176,7 @@ async function serve(event, url, path) {
 self.addEventListener("fetch", event => {
   const url = new URL(event.request.url);
   if (url.origin !== scopeURL.origin || !url.pathname.startsWith(scopeURL.pathname)) return;
-  if (url.pathname === "/access/unlock" && event.request.method === "POST") return;
+  if (scopeURL.origin === "http://127.0.0.1:4173" && url.pathname === "/access/unlock" && event.request.method === "POST") return;
   if (url.pathname.startsWith("/access/") || url.pathname === "/admin" || url.pathname.startsWith("/admin/")) {
     event.respondWith(errorResponse(404));
     return;

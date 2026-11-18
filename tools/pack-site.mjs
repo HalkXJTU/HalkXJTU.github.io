@@ -12,11 +12,11 @@ if (!sourceArg || !outputArg) {
 
 const source = resolve(sourceArg);
 const output = resolve(outputArg);
-const accessEndpoint = process.env.SITE_ACCESS_ENDPOINT?.trim();
-if (accessEndpoint) {
-  const endpoint = new URL(accessEndpoint);
-  if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password || endpoint.search || endpoint.hash) {
-    throw new Error('SITE_ACCESS_ENDPOINT must be an HTTPS endpoint without credentials, a query or a fragment.');
+const statsEndpoint = process.env.SITE_STATS_ENDPOINT?.trim();
+if (statsEndpoint) {
+  const endpoint = new URL(statsEndpoint);
+  if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password || endpoint.href !== endpoint.origin + '/access/visits') {
+    throw new Error('SITE_STATS_ENDPOINT must be the HTTPS /access/visits URL.');
   }
 }
 const publicPages = new Set(['index.html', 'legacy.html']);
@@ -90,6 +90,6 @@ const index = seal(contentKey, Buffer.from(JSON.stringify(manifest)));
 await writeFile(join(output, 'vault', 'manifest.bin'), index.data);
 await writeFile(join(privateDir, id + '.json'), JSON.stringify({ id, key: contentKey.toString('base64') }) + '\n', { flag: 'wx', mode: 0o600 });
 await writeFile(join(output, 'gate-config.json'), JSON.stringify({
-  id, manifestIv: index.iv, ...(accessEndpoint ? { accessEndpoint } : {})
+  id, manifestIv: index.iv, inviteGrants: 'invitation-grants.json', ...(statsEndpoint ? { statsEndpoint } : {})
 }) + '\n');
 console.log(`Encrypted ${entries.length} files in ${basename(output)}. Private release settings saved outside the site for ${id}.`);

@@ -55,6 +55,11 @@ async function apiRequest(access, req, res, url) {
 }
 
 const access = await initializeLocalService();
+if (process.argv[2] === '--sync-release') {
+  access.close();
+  console.log('Local preview now uses the current release.');
+  process.exit(0);
+}
 if (process.argv[2] === '--set-owner-pin') {
   try {
     await access.setOwnerPin(readFileSync(0, 'utf8').trim());

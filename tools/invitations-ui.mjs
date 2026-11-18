@@ -34,25 +34,25 @@ export function dashboard(session, live) {
   </style>
   <script src="/operator.js" defer></script>
 </head>
-<body>
+<body data-offline-grants="${live ? 'true' : 'false'}">
   <main>
     <header><h1>邀请管理</h1><span class="target">${live ? '线上主页' : '本机预览'}</span></header>
     <section class="section" aria-labelledby="issue-title">
       <h2 id="issue-title">生成专属邀请码</h2>
-      <p class="help">${live ? '为每位收件人分别生成，把主页链接和邀请码放入对方的邮件。' : '这里的链接和邀请码仅供本机预览。给老师发信时，请使用线上服务生成的邀请码。'}</p>
+      <p class="help">${live ? '从本机邀请池分配；再次输入同一备注可取回该收件人的有效码。' : '这里的链接和邀请码仅供本机预览。给老师发信时，请使用正式邀请池。'}</p>
       <form id="issue"><label for="recipient">收件人备注</label>
         <div class="entry"><input id="recipient" name="recipient" required autocomplete="off"><button class="primary" type="submit">生成邀请码</button></div>
       </form>
       <p class="status" id="issue-status" role="status"></p>
       <div id="created" hidden><h3 id="created-for"></h3>
-        <p class="help">请现在保存邀请码，离开后无法在列表中查看原码。</p>
+        <p class="help">${live ? '请将主页地址和这枚专用码一并发给收件人。' : '请现在保存邀请码，离开后无法在列表中查看原码。'}</p>
         <textarea id="invite-text" aria-label="可复制的邀请文字" rows="3" readonly></textarea>
         <div class="actions"><button type="button" class="primary" id="copy">复制邀请文字</button><button type="button" class="plain" id="hide">收起并清除</button></div>
       </div>
     </section>
     <section class="section" aria-labelledby="counts-title">
       <div class="section-title"><h2 id="counts-title">成功解锁次数</h2><button type="button" class="plain" id="reload">刷新统计</button></div>
-      <p class="help">每次用邀请码验证成功计一次。刷新页面、同一会话内切换版本不会增加次数。邀请码被转发后，次数也会记在原码上。</p>
+      <p class="help">${live ? '这里显示统计服务收到的成功解锁次数。浏览器离线或未能送达的访问可能漏计。' : '每次用邀请码验证成功计一次。'}刷新页面、同一会话内切换版本不会增加次数。邀请码被转发后，次数也会记在原码上。</p>
       <p class="status" id="count-status" role="status"></p>
       <div class="scroll"><table aria-label="按邀请码统计的成功解锁次数">
         <thead><tr><th scope="col">收件人备注</th><th scope="col" aria-sort="descending">次数 ↓</th><th scope="col">状态</th><th scope="col" aria-label="操作"></th></tr></thead>

@@ -1,15 +1,20 @@
 import { randomBytes } from 'node:crypto';
 import { readFile, realpath } from 'node:fs/promises';
 import { createServer } from 'node:http';
-import { isAbsolute, join, relative, sep } from 'node:path';
+import { dirname, isAbsolute, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { localAccessDir } from './access-paths.mjs';
+import { localAccessDir, privateReleaseDir } from './access-paths.mjs';
+import { invitationList, openPool, PoolError, registerCounts } from './offline-invites.mjs';
 import { dashboard } from './invitations-ui.mjs';
 
 const repo = fileURLToPath(new URL('../', import.meta.url));
-const operatorOrigin = 'http://127.0.0.1:4174';
+const operatorPort = Number(process.env.SITE_OPERATOR_PORT || 4174);
+if (!Number.isInteger(operatorPort) || operatorPort < 1024 || operatorPort > 65535) {
+  throw new Error('请选择 1024 至 65535 之间的本机管理端口。');
+}
+const operatorOrigin = 'http://127.0.0.1:' + operatorPort;
 const previewOrigin = 'http://127.0.0.1:4173';
-const consoleHelp = 'node tools/invitations.mjs [serve | list | create "收件人备注"]';
+const consoleHelp = 'node tools/invitations.mjs [serve | list | create "收件人备注" | revoke ID | init | export | register]';
 
 async function settings() {
   const remoteFile = process.env.SITE_OPERATOR_CONFIG;
@@ -35,7 +40,8 @@ async function settings() {
     throw new Error('请使用不含凭据、查询参数和锚点的 API 与主页地址。');
   }
   api.pathname = api.pathname.replace(/\/+$/, '') + '/';
-  return { api, site: site.href, token: config.ADMIN_TOKEN, live: Boolean(remoteFile) };
+  return { api, site: site.href, token: config.ADMIN_TOKEN, live: Boolean(remoteFile),
+    pool: remoteFile ? openPool(dirname(location)) : null };
 }
 
 class ServiceError extends Error {
@@ -65,6 +71,16 @@ async function requestApi(config, path, options = {}) {
   } catch { throw new ServiceError(502); }
   if (!reply.ok) throw new ServiceError(reply.status);
   return reply.json();
+}
+
+function listInvites(config) {
+  return config.live ? invitationList(config) : requestApi(config, '');
+}
+function issueInvite(config, label) {
+  return config.live ? config.pool.issue(label) : requestApi(config, '', { method: 'POST', body: { label } });
+}
+function revokeInvite(config, id) {
+  return config.live ? config.pool.revoke(id) : requestApi(config, '/' + encodeURIComponent(id) + '/revoke', { method: 'POST', body: {} });
 }
 
 function json(response, status, value) {
@@ -109,8 +125,8 @@ async function serve(config) {
         return json(res, 403, {});
       }
       if (req.method === 'GET' && req.url === '/invitations') {
-        const data = await requestApi(config, '');
-        return json(res, 200, { invites: data.invites, site: config.site });
+        const data = await listInvites(config);
+        return json(res, 200, { ...data, site: config.site });
       }
       if (req.method !== 'POST' || origin !== operatorOrigin ||
           req.headers['content-type']?.split(';')[0].trim() !== 'application/json') {
@@ -118,41 +134,52 @@ async function serve(config) {
       }
       if (req.url === '/invitations') {
         const payload = await readBody(req);
-        const result = await requestApi(config, '', { method: 'POST', body: { label: payload?.label } });
+        const result = await issueInvite(config, payload?.label);
         return json(res, 201, { ...result, site: config.site });
       }
       const revoke = /^\/invitations\/([a-zA-Z0-9_-]{1,80})\/revoke$/.exec(req.url);
       if (revoke) {
         await readBody(req);
-        const result = await requestApi(config, '/' + revoke[1] + '/revoke', { method: 'POST', body: {} });
+        const result = await revokeInvite(config, revoke[1]);
         return json(res, 200, result);
       }
       json(res, 404, {});
     } catch (error) {
-      json(res, error instanceof ServiceError ? error.status : 502, {
-        error: error instanceof ServiceError ? error.message : '访问服务响应异常，请刷新列表。'
+      json(res, error instanceof ServiceError ? error.status : error instanceof PoolError ? 400 : 502, {
+        error: error instanceof ServiceError || error instanceof PoolError ? error.message : '访问服务响应异常，请刷新列表。'
       });
     }
   });
   server.on('error', () => {
-    console.error('无法启动本机邀请管理，请确认 4174 端口可用。');
+    console.error('无法启动本机邀请管理，请确认端口可用。');
     process.exitCode = 1;
   });
-  server.listen(4174, '127.0.0.1', () => console.log('邀请管理已启动 ' + operatorOrigin + '/'));
+  server.listen(operatorPort, '127.0.0.1', () => console.log('邀请管理已启动 ' + operatorOrigin + '/'));
 }
 
 async function main() {
   const [command = 'serve', ...args] = process.argv.slice(2);
   if (['-h', '--help', 'help'].includes(command)) return console.log(consoleHelp);
-  if (!['serve', 'list', 'create'].includes(command) || (command === 'create' ? args.length !== 1 : args.length)) {
+  const takesArg = command === 'create' || command === 'revoke';
+  if (!['serve', 'list', 'create', 'revoke', 'init', 'export', 'register'].includes(command) || args.length !== (takesArg ? 1 : 0)) {
     throw new Error(consoleHelp);
   }
   const config = await settings();
   if (command === 'serve') return serve(config);
-  const result = command === 'create'
-    ? await requestApi(config, '', { method: 'POST', body: { label: args[0] } })
-    : await requestApi(config, '');
-  console.log(JSON.stringify({ target: config.live ? 'live' : 'local', site: config.site, ...result }, null, 2));
+  try {
+    let result;
+    switch (command) {
+      case 'list': result = await listInvites(config); break;
+      case 'create': result = await issueInvite(config, args[0]); break;
+      case 'revoke': result = await revokeInvite(config, args[0]); break;
+      default:
+        if (!config.live) throw new Error('请先设置正式站主配置 SITE_OPERATOR_CONFIG。');
+        if (command === 'init') result = config.pool.init();
+        if (command === 'export') result = config.pool.exportGrants(join(repo, 'gate-config.json'), privateReleaseDir, join(repo, 'invitation-grants.json'));
+        if (command === 'register') result = await registerCounts(config);
+    }
+    console.log(JSON.stringify({ target: config.live ? 'live' : 'local', site: config.site, ...result }, null, 2));
+  } finally { config.pool?.close(); }
 }
 main().catch(error => {
   console.error(error instanceof SyntaxError ? '私有配置文件的 JSON 格式有误。' : error.message);

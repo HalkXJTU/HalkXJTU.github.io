@@ -1,36 +1,33 @@
-# 学术主页与专属邀请
+# 学术主页与专属邀请码
 
-站点的新版和旧版仍是静态页面，可部署到 GitHub Pages。访客使用各自收到的邀请码解锁，两版共用同一阅读会话。独立的验证服务保存邀请码摘要和累计次数，站主在邀请邮件中说明计数方式。
+GitHub Pages 从 main 根目录提供新版和旧版主页、邀请码输入界面、三语脚本、加密资源及公开的邀请授权文件。浏览器用收到的邀请码在本地打开对应授权，取得本版资料的解密密钥。GitHub Pages 与其静态资源可访问时即可阅读。ChatGPT Sites 提供一个独立的访问计数接口，首页在解锁成功后异步上报。
 
-## 本机预览与邀请管理
+## 访客与计数
 
-使用 Node.js 24。在发布目录运行 `node tools/preview.mjs`，再运行 `node tools/invitations.mjs`。前者提供 [访客预览](http://127.0.0.1:4173/)，后者提供[仅限本机的邀请管理](http://127.0.0.1:4174/)。打开管理页，填写只够自己识别收件人的备注，即可生成专属邀请码、复制邀请文字、查看成功解锁次数或停用邀请码。
+- 访客打开 https://halkxjtu.github.io/ 并粘贴邮件中的专属邀请码。GitHub 上的 `invitation-grants.json` 包含随机标识和加密后的授权，不含邀请码、收件人姓名或邮箱。
+- 计数服务为 `https://halk-invite-access.wxz20050705.chatgpt.site/access/visits`。浏览器发送由邀请码单独派生的计数凭据和随机事件编号。服务保存匿名计数，包括重试去重所需的记录。收件人备注在站主的电脑上管理。
+- 刷新或切换语言、版式会沿用当前会话。统计服务无法连接时仍可解锁，浏览器在条件允许时补报。长期断网、未再次打开或清理浏览器数据可能导致少记。转发邀请码会共用该码的计数。
+- GitHub Pages 提供的是可下载的资料。已解锁的访客可以保存已展示的内容，以前公开过的历史提交和缓存也可能保留旧版。
 
-站主也可以在本机预览的同一输入框使用已配置的四位个人密码。预览后台将站主的解锁次数单独列出。要设置或更换此密码，可在 PowerShell 7 中运行 `(Read-Host '新的四位密码' -MaskInput) | node tools/preview.mjs --set-owner-pin`。正式网站使用为各位收件人生成的邀请码。
+## 本机预览和正式邀请
 
-本机模式使用独立的 SQLite 数据库和私有配置。Windows 默认为 `%LOCALAPPDATA%\HalkHomepage\access-local`。保管此目录及 `%LOCALAPPDATA%\HalkHomepage\releases` 的私有发布密钥。有密文的完整 ZIP 供部署使用，单独解压 ZIP 无法恢复访问凭据。新设备需要从本人的私有备份恢复密钥，或从私有原稿重新打包。
+使用 Node.js 24，运行 `node tools/preview.mjs` 后打开 http://127.0.0.1:4173/ 。该地址使用独立的本机测试库，也支持站主已配置的四位个人密码。正式首页使用高熵的独立邀请码。
 
-## 正式发信与线上统计
+正式管理使用站主电脑上的私有 `operator.json`。在 PowerShell 中，将 `$env:SITE_OPERATOR_CONFIG` 设为该文件的绝对路径，设置 `$env:SITE_OPERATOR_PORT = '4175'`，再运行 `node tools/invitations.mjs`。在 http://127.0.0.1:4175/ 分配邀请码、查看成功次数。默认的本机测试管理位于端口 4174，使用独立数据库。私有配置、邀请码池、名单及发布密钥均应保存在仓库外并由站主备份。
 
-1. 按[部署说明](access-service/README.md)发布验证服务，使用独立的生产数据库和随机管理密钥。Pages 和 Worker 均配置好后再发送邀请。
-2. 将本次发布密钥文件交给 **Worker Secrets** 的 `SITE_RELEASE`。可用 PowerShell 在本机授权的 Wrangler 工作目录运行下方命令。文件路径中的发布编号来自公开 `gate-config.json` 的 `id`。密钥文件、管理员令牌、名单、原始邀请码和数据库只保存在站主私有环境。
-3. 在公开 `gate-config.json` 里设置 `accessEndpoint` 为已部署 Worker 的 HTTPS 地址，路径为 `/access/unlock`。保持 `id`、`manifestIv` 和同一批 `vault/` 文件配套。仅设置站主工具的地址不能代替访客端的此项配置。
-4. 在发布仓库之外准备站主管理配置 JSON，包含 `API_BASE`（Worker 的 HTTPS 地址加 `/access`）、`PUBLIC_SITE_URL`（公开主页的 HTTPS 地址）、`ADMIN_TOKEN`（同 Worker 管理 Secret）。将绝对路径赋给环境变量 `SITE_OPERATOR_CONFIG` 后启动 `node tools/invitations.mjs`。本机后台显示“线上主页”，此时生成的邀请与统计来自正式数据。
-5. 每位收件人使用各自的码，邮件附主页链接、专属码及按码计数的简短说明。多位收件人分别拟稿。也可运行 `node tools/invitations.mjs create "收件人备注"` 和 `node tools/invitations.mjs list`。每个码只在生成时显示一次。
+| 操作 | 已选择正式配置后的命令 |
+| --- | --- |
+| 建立或复用本站的私有邀请码池 | `node tools/invitations.mjs init` |
+| 生成本版公开授权文件 | `node tools/invitations.mjs export` |
+| 向 Sites 登记匿名计数摘要 | `node tools/invitations.mjs register` |
+| 为一位收件人分配邀请码 | `node tools/invitations.mjs create "收件人备注"` |
+| 按收件人查看计数 | `node tools/invitations.mjs list` |
+| 停用邀请码 | `node tools/invitations.mjs revoke <标识>`，随后重新导出并发布授权文件 |
 
-```powershell
-$siteConfigFile = Read-Host '输入本次公开发布文件 gate-config.json 的完整路径'
-$releaseId = (Get-Content -Raw -LiteralPath $siteConfigFile | ConvertFrom-Json).id
-$releaseFile = Join-Path $env:LOCALAPPDATA "HalkHomepage\releases\$releaseId.json"
-Get-Content -Raw -LiteralPath $releaseFile | npx wrangler secret put SITE_RELEASE
-```
+从已发布的池中给每位老师分配一个码，每人一封邮件，附同一个主页网址及该收件人的码，并说明主页统计成功解锁次数。新分配不需要逐封重新发布。停用会在更新后的 GitHub 授权文件发布后阻止新的解锁。已有会话可继续使用至到期。
 
-正确的邀请码获准解锁时计一次。普通刷新、切换语言、切换版式不增加次数。短时间内重试同一网络请求会去重。转发会沿用同一码的计数。停用可阻止后续解锁，已获准的标签页会话最长持续两小时。
+## 更新主页
 
-## 更新内容
+在独立私有工作区维护 HTML、CSS、脚本与资料。运行 `node tools/pack-site.mjs "私有原稿目录" "新的输出目录"` 创建新的一批密文。若需要计数，打包前将 `SITE_STATS_ENDPOINT` 设为本页所列的 HTTPS 计数接口。发布密钥保存在仓库外的私有 releases 目录。将配套的 `vault/`、`gate-config.json` 放入发布目录，然后用同一私有池执行 `export` 得到与该发布编号匹配的 `invitation-grants.json`。这三者需一起发布。新内容的密钥只在站主机生成，Sites 配置只包含统计管理令牌。
 
-在独立私有目录编辑原稿。运行 `node tools/pack-site.mjs "原稿目录" "新的输出目录"`，得到 `vault/` 与 `gate-config.json`。设置环境变量 `SITE_ACCESS_ENDPOINT` 可将经确认的生产验证地址写入发布配置。对应 AES-256 密钥只写入仓库外的私有 `releases` 目录。将密钥部署到验证服务，然后发布本批静态文件。保留生产数据库和 `INVITE_HMAC_KEY` 即可延续已有邀请与计数。
-
-主页历史上公开的内容可能仍保存在以往提交或他人的副本中。站点代码不收集访客 IP、邮箱或页面浏览轨迹。
-
-入口构图曾参考 SO called 的 [Animated Characters Login Page](https://21st.dev/@socolled/components/animated-characters-login-page)，目前的角色图形和指针定位逻辑由站点本地实现。
+入口构图曾参考 SO called 的 [Animated Characters Login Page](https://21st.dev/@socolled/components/animated-characters-login-page)。

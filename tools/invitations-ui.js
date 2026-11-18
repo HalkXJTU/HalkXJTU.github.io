@@ -1,5 +1,6 @@
 'use strict';
 const session = document.querySelector('meta[name="operator-session"]').content;
+const offlineGrants = document.body.dataset.offlineGrants === 'true';
 const form = document.querySelector('#issue');
 const formButton = form.querySelector('button');
 const label = document.querySelector('#recipient');
@@ -32,7 +33,8 @@ function clearCode() {
 }
 function showRow(invite) {
   const row = document.createElement('tr');
-  for (const value of [invite.label, String(invite.successes), invite.revoked ? '已停用' : '有效']) {
+  const state = invite.revoked ? (offlineGrants ? '已标记停用' : '已停用') : '有效';
+  for (const value of [invite.label, invite.successes === null ? '暂无统计' : String(invite.successes), state]) {
     const cell = row.insertCell();
     cell.textContent = value;
   }
@@ -44,7 +46,8 @@ function showRow(invite) {
     stop.textContent = '停用';
     stop.setAttribute('aria-label', '停用给 ' + invite.label + ' 的邀请码');
     stop.addEventListener('click', async () => {
-      if (!window.confirm('停用给「' + invite.label + '」的邀请码？之后再次解锁需要新码，已有次数会保留。')) return;
+      const notice = offlineGrants ? '需导出并重新发布 invitation-grants.json 才会对公开主页生效。' : '之后再次解锁需要新码，已有次数会保留。';
+      if (!window.confirm('停用给「' + invite.label + '」的邀请码？' + notice)) return;
       stop.disabled = true;
       try {
         await api('/invitations/' + encodeURIComponent(invite.id) + '/revoke', {});
@@ -63,7 +66,7 @@ async function refresh() {
   try {
     const result = await api('/invitations');
     if (request !== listRequest) return;
-    const invites = result.invites.sort((a, b) => b.successes - a.successes || a.label.localeCompare(b.label, 'zh'));
+    const invites = result.invites.sort((a, b) => (b.successes ?? -1) - (a.successes ?? -1) || a.label.localeCompare(b.label, 'zh'));
     tbody.replaceChildren(...invites.map(showRow));
     if (!invites.length) {
       const cell = tbody.insertRow().insertCell();
@@ -71,7 +74,11 @@ async function refresh() {
       cell.className = 'empty';
       cell.textContent = '尚未生成邀请码';
     }
-    status(countStatus, '');
+    const messages = [];
+    if (result.countsAvailable === false) messages.push('统计服务当前不可用，仍可分配邀请码。');
+    else if (invites.some(item => item.successes === null)) messages.push('部分邀请码尚无对应统计记录。');
+    if (offlineGrants && invites.some(item => item.revoked)) messages.push('标记停用后，须导出并重新发布授权文件方可生效。');
+    status(countStatus, messages.join(' '), result.countsAvailable === false);
   } catch (error) {
     if (request === listRequest) status(countStatus, error.message, true);
   } finally { if (request === listRequest) reload.disabled = false; }
