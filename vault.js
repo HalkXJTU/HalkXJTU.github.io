@@ -77,15 +77,46 @@
   function base64(buffer) {
     return btoa(String.fromCharCode(...new Uint8Array(buffer)));
   }
+  async function namedInviteModule() {
+    try { return await import("./named-invites.mjs"); }
+    catch (error) {
+      // A worker from the previous release can still deny the new public module.
+      const previous = service?.controller;
+      if (!isOurWorker(previous)) throw error;
+      const registration = await service.getRegistration(scope);
+      if (!registration) throw error;
+      await registration.update();
+      if (previous === service.controller && (registration.installing || registration.waiting)) {
+        await new Promise(resolve => {
+          const done = () => {
+            clearTimeout(timer);
+            service.removeEventListener("controllerchange", done);
+            resolve();
+          };
+          const timer = setTimeout(done, 4000);
+          service.addEventListener("controllerchange", done);
+        });
+      }
+      // A failed module URL remains cached in the current document.
+      return import("./named-invites.mjs?retry");
+    }
+  }
   async function readGrant(code, settings) {
-    if (scope.origin === previewOrigin && !settings.inviteGrants && !settings.accessEndpoint) {
+    const preview = scope.origin === previewOrigin;
+    const named = code.startsWith("inv-");
+    if (preview && !named && !settings.inviteGrants && !settings.accessEndpoint) {
       if (!inviteFormat.test(code) && !/^\d{4}$/.test(code)) throw new Error("wrong");
       return { state: await previewGrant(code, settings) };
     }
-    if (!inviteFormat.test(code)) throw new Error("wrong");
-    if (settings.inviteGrants !== "invitation-grants.json") throw new Error("unavailable");
-    const table = await (await resource(settings.inviteGrants)).json();
+    if (!named && !inviteFormat.test(code)) throw new Error("wrong");
+    const grantsFile = preview && named ? "invitation-grants.json" : settings.inviteGrants;
+    if (grantsFile !== "invitation-grants.json") throw new Error("unavailable");
+    const table = await (await resource(grantsFile)).json();
     if (table.version !== 1 || table.release !== settings.id) throw new Error("updated");
+    if (named) {
+      const { resolveNamedInvite } = await namedInviteModule();
+      code = await resolveNamedInvite(code, settings.id, table.namedGrants);
+    }
     const id = Array.from(new Uint8Array(await digest("id", code), 0, 16),
       byte => byte.toString(16).padStart(2, "0")).join("");
     const grant = table.grants?.[id];
@@ -95,8 +126,10 @@
       name: "AES-GCM", iv: bytes(grant.iv), additionalData: encoder.encode(id + "." + settings.id)
     }, wrap, bytes(grant.wrapped));
     if (raw.byteLength !== 32) throw new Error("unavailable");
+    const state = { id: settings.id, key: base64(raw), until: Date.now() + lifetime };
+    if (preview) return { state };
     const receipt = base64(await digest("count", code)).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/, "");
-    return { state: { id: settings.id, key: base64(raw), until: Date.now() + lifetime }, receipt };
+    return { state, receipt };
   }
 
   const queuePrefix = "homepage-visit:" + scope.pathname + ":";
@@ -130,7 +163,7 @@
     return entries;
   }
   async function flushVisits() {
-    if (flushing) return;
+    if (flushing || scope.origin === previewOrigin) return;
     const entries = queuedVisits();
     if (!entries.length || navigator.onLine === false) return;
     flushing = true;

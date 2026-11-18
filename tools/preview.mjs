@@ -10,8 +10,8 @@ import { localAccessDir, privateReleaseDir } from './access-paths.mjs';
 const root = new URL('../', import.meta.url);
 const origin = 'http://127.0.0.1:4173';
 const entries = new Set(['index.html', 'legacy.html', 'gate-ui.js', 'gate-ui.css',
-  'vault.js', 'gate-sw.js', 'gate-config.json', 'robots.txt']);
-const mime = { '.js': 'text/javascript; charset=utf-8', '.html': 'text/html; charset=utf-8',
+  'vault.js', 'gate-sw.js', 'gate-config.json', 'invitation-grants.json', 'named-invites.mjs', 'robots.txt']);
+const mime = { '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.txt': 'text/plain; charset=utf-8' };
 
 async function initializeLocalService() {

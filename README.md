@@ -4,7 +4,7 @@ GitHub Pages 从 main 根目录提供新版和旧版主页、邀请码输入界�
 
 ## 访客与计数
 
-- 访客打开 https://halkxjtu.github.io/ 并粘贴邮件中的专属邀请码。GitHub 上的 `invitation-grants.json` 包含随机标识和加密后的授权，不含邀请码、收件人姓名或邮箱。
+- 访客打开 https://halkxjtu.github.io/ 并粘贴邮件中的专属邀请码。新码以 `inv-` 开头，后接收件人的英文姓名和 10 个随机小写英文字母，词间用连字符连接。姓名按收件人使用的顺序填写，例如 `Jing Hao` 在码中写作 `jing-hao`。既有长码也可使用，两种写法共用同一个访问计数。GitHub 上的 `invitation-grants.json` 仅包含随机标识和加密授权。
 - 计数服务为 `https://halk-invite-access.wxz20050705.chatgpt.site/access/visits`。浏览器发送由邀请码单独派生的计数凭据和随机事件编号。服务保存匿名计数，包括重试去重所需的记录。收件人备注在站主的电脑上管理。
 - 刷新或切换语言、版式会沿用当前会话。统计服务无法连接时仍可解锁，浏览器在条件允许时补报。长期断网、未再次打开或清理浏览器数据可能导致少记。转发邀请码会共用该码的计数。
 - GitHub Pages 提供的是可下载的资料。已解锁的访客可以保存已展示的内容，以前公开过的历史提交和缓存也可能保留旧版。
@@ -20,7 +20,8 @@ GitHub Pages 从 main 根目录提供新版和旧版主页、邀请码输入界�
 | 建立或复用本站的私有邀请码池 | `node tools/invitations.mjs init` |
 | 生成本版公开授权文件 | `node tools/invitations.mjs export` |
 | 向 Sites 登记匿名计数摘要 | `node tools/invitations.mjs register` |
-| 为一位收件人分配邀请码 | `node tools/invitations.mjs create "收件人备注"` |
+| 为新收件人分配邀请码，或为旧码绑定英文姓名 | `node tools/invitations.mjs create "收件人备注" "English Name"` |
+| 取回已分配的邀请码 | `node tools/invitations.mjs create "收件人备注"` |
 | 按收件人查看计数 | `node tools/invitations.mjs list` |
 | 停用邀请码 | `node tools/invitations.mjs revoke <标识>`，随后重新导出并发布授权文件 |
 

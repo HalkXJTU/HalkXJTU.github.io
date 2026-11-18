@@ -18,7 +18,8 @@ export function dashboard(session, live) {
     .target{border-bottom:2px solid #8dada1;padding:4px 0;white-space:nowrap}
     .section{background:#fffefb;border:1px solid #d8dcd3;border-radius:12px;padding:clamp(16px,3vw,26px);margin-top:24px}
     .help{margin-top:6px}.status{margin:10px 0 0}.status:empty{display:none}.error{color:#8b3a2d}
-    form{margin-top:16px}label{font-size:14px;font-weight:600}.entry{display:flex;gap:10px;margin-top:5px}
+    form{margin-top:16px}label{font-size:14px;font-weight:600}
+    .field{display:grid;gap:5px;margin-bottom:12px}
     input,button,textarea{font:inherit}input,textarea{border:1px solid #94a49b;border-radius:6px;background:#fff;color:var(--ink)}
     input{flex:1;min-width:0;padding:9px 10px}button{min-height:42px;border-radius:6px;padding:7px 14px;cursor:pointer}
     button:disabled{opacity:.6;cursor:wait}.primary{background:var(--teal);border:1px solid var(--teal);color:#fff}
@@ -30,7 +31,7 @@ export function dashboard(session, live) {
     th,td{border-bottom:1px solid #d8ded7;padding:10px 8px 10px 0;vertical-align:middle}thead{color:var(--muted)}
     td:first-child{overflow-wrap:anywhere}td:last-child{text-align:right}td:nth-child(2){font-variant-numeric:tabular-nums}
     td:nth-child(3){white-space:nowrap}tbody tr:last-child td{border-bottom:0}.empty{color:var(--muted);text-align:left!important}
-    @media(max-width:490px){.entry{flex-direction:column}.section{padding:14px}.section-title{align-items:baseline}td,th{font-size:13px;padding-right:5px}td button{padding:6px 8px}}
+    @media(max-width:490px){.section{padding:14px}.section-title{align-items:baseline}td,th{font-size:13px;padding-right:5px}td button{padding:6px 8px}}
   </style>
   <script src="/operator.js" defer></script>
 </head>
@@ -39,9 +40,11 @@ export function dashboard(session, live) {
     <header><h1>邀请管理</h1><span class="target">${live ? '线上主页' : '本机预览'}</span></header>
     <section class="section" aria-labelledby="issue-title">
       <h2 id="issue-title">生成专属邀请码</h2>
-      <p class="help">${live ? '从本机邀请池分配；再次输入同一备注可取回该收件人的有效码。' : '这里的链接和邀请码仅供本机预览。给老师发信时，请使用正式邀请池。'}</p>
-      <form id="issue"><label for="recipient">收件人备注</label>
-        <div class="entry"><input id="recipient" name="recipient" required autocomplete="off"><button class="primary" type="submit">生成邀请码</button></div>
+      <p class="help">${live ? '英文姓名会出现在邀请码里。再次取回时只需填写原来的备注。' : '这里的链接和邀请码仅供本机预览。给老师发信时，请使用正式邀请池。'}</p>
+      <form id="issue">
+        <div class="field"><label for="recipient">收件人备注</label><input id="recipient" name="recipient" required autocomplete="off"></div>
+        ${live ? '<div class="field"><label for="english-name">收件人英文姓名</label><input id="english-name" name="englishName" placeholder="Jing Hao" autocomplete="off" spellcheck="false"></div>' : ''}
+        <button class="primary" type="submit">生成邀请码</button>
       </form>
       <p class="status" id="issue-status" role="status"></p>
       <div id="created" hidden><h3 id="created-for"></h3>

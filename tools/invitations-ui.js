@@ -4,6 +4,7 @@ const offlineGrants = document.body.dataset.offlineGrants === 'true';
 const form = document.querySelector('#issue');
 const formButton = form.querySelector('button');
 const label = document.querySelector('#recipient');
+const englishName = document.querySelector('#english-name');
 const issued = document.querySelector('#created');
 const inviteText = document.querySelector('#invite-text');
 const countStatus = document.querySelector('#count-status');
@@ -94,12 +95,12 @@ form.addEventListener('submit', async event => {
   if (!issued.hidden && !window.confirm('生成下一份邀请前，请确认已保存当前邀请码。继续吗？')) return;
   formButton.disabled = true;
   try {
-    const invite = await api('/invitations', { label: recipient });
+    const invite = await api('/invitations', { label: recipient, englishName: englishName?.value.trim() || undefined });
     document.querySelector('#created-for').textContent = '给' + invite.label + '的邀请';
     inviteText.value = '学术主页：' + invite.site + '\n您的专属邀请码：' + invite.code + '\n主页会按此邀请码累计成功解锁次数。';
     issued.dataset.id = invite.id;
     issued.hidden = false;
-    label.value = '';
+    form.reset();
     status(issueStatus, '邀请码已生成。');
     await refresh();
   } catch (error) { status(issueStatus, error.message, true); }
